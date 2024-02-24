@@ -4,6 +4,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import numpy as np
 
+# De Ángel Adrián Martínez Bernardino.
 # Inicializa pygame y crea una ventana.
 pygame.init()
 display = (800, 600)
