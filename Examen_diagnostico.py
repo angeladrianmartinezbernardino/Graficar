@@ -67,7 +67,7 @@ def Dibujar_barco_2(x, y, orientacion):
 
 
 def Dibujar_barco_3(x, y, orientacion):
-    glColor3fv((0.1451, 0.7098, 0.2039))
+    glColor3fv((0.1451, 0.7098, 0.2039)) # Verde oscuro.
     Dibujar_barco(4, x, y, orientacion)  # Asumiendo que la longitud del barco 3 es 4.
 
 
