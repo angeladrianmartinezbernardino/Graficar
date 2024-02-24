@@ -67,16 +67,16 @@ def Verificar_ganador():
     # Verificar filas.
     for Fila in range(3):
         if Tablero[Fila][0] == Tablero[Fila][1] == Tablero[Fila][2] != 0:
-            return 'X' if Tablero[Fila][0] == 1 else 'O'
+            return 'x' if Tablero[Fila][0] == 1 else 'o'
     # Verificar columnas.
     for Columna in range(3):
         if Tablero[0][Columna] == Tablero[1][Columna] == Tablero[2][Columna] != 0:
-            return 'X' if Tablero[0][Columna] == 1 else 'O'
+            return 'x' if Tablero[0][Columna] == 1 else 'o'
     # Verificar diagonales.
     if Tablero[0][0] == Tablero[1][1] == Tablero[2][2] != 0:
-        return 'X' if Tablero[0][0] == 1 else 'O'
+        return 'x' if Tablero[0][0] == 1 else 'o'
     if Tablero[0][2] == Tablero[1][1] == Tablero[2][0] != 0:
-        return 'X' if Tablero[0][2] == 1 else 'O'
+        return 'x' if Tablero[0][2] == 1 else 'o'
     return None
 
 
