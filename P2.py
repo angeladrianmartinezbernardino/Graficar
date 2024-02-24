@@ -6,27 +6,27 @@ import time
 pygame.init()
 
 # Definir colores.
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
+Negro = (0, 0, 0)
+Blanco = (255, 255, 255)
+Rojo = (255, 0, 0)
+Azul = (0, 0, 255)
 
 # Establecer el tamaño de la ventana.
-window_size = (300, 300)
-screen = pygame.display.set_mode(window_size)
-pygame.display.set_caption("Juego del Gato")
+Tamaño_ventana = (300, 300)
+Pantalla = pygame.display.set_mode(Tamaño_ventana)
+pygame.display.set_caption("Juego del gato")
 
 # Definir el tamaño de las celdas y el tablero.
-cell_size = 100
+Tamaño_celda = 100
 board = np.zeros((3, 3))
 
 
 # Función para dibujar la cuadrícula.
 def draw_grid():
     for x in range(1, 3):
-        pygame.draw.line(screen, BLACK, (x * cell_size, 0), (x * cell_size, window_size[1]), 2)
+        pygame.draw.line(Pantalla, Negro, (x * Tamaño_celda, 0), (x * Tamaño_celda, Tamaño_ventana[1]), 2)
     for y in range(1, 3):
-        pygame.draw.line(screen, BLACK, (0, y * cell_size), (window_size[0], y * cell_size), 2)
+        pygame.draw.line(Pantalla, Negro, (0, y * Tamaño_celda), (Tamaño_ventana[0], y * Tamaño_celda), 2)
 
 
 # Función para dibujar la "x" y la "o".
@@ -34,12 +34,12 @@ def draw_moves():
     for row in range(3):
         for col in range(3):
             if board[row][col] == 1:
-                pygame.draw.line(screen, RED, (col * cell_size + 25, row * cell_size + 25),
-                                 (col * cell_size + 75, row * cell_size + 75), 2)
-                pygame.draw.line(screen, RED, (col * cell_size + 75, row * cell_size + 25),
-                                 (col * cell_size + 25, row * cell_size + 75), 2)
+                pygame.draw.line(Pantalla, Rojo, (col * Tamaño_celda + 25, row * Tamaño_celda + 25),
+                                 (col * Tamaño_celda + 75, row * Tamaño_celda + 75), 2)
+                pygame.draw.line(Pantalla, Rojo, (col * Tamaño_celda + 75, row * Tamaño_celda + 25),
+                                 (col * Tamaño_celda + 25, row * Tamaño_celda + 75), 2)
             elif board[row][col] == 2:
-                pygame.draw.circle(screen, BLUE, (col * cell_size + 50, row * cell_size + 50), 37, 2)
+                pygame.draw.circle(Pantalla, Azul, (col * Tamaño_celda + 50, row * Tamaño_celda + 50), 37, 2)
 
 
 # Función para manejar los movimientos.
@@ -101,8 +101,8 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouseX, mouseY = pygame.mouse.get_pos()  # Obtener la posición del clic.
 
-            clicked_row = int(mouseY // cell_size)
-            clicked_col = int(mouseX // cell_size)
+            clicked_row = int(mouseY // Tamaño_celda)
+            clicked_col = int(mouseX // Tamaño_celda)
 
             # Convertir la fila y columna clickeada a la posición en el tablero.
             if board[clicked_row][clicked_col] == 0:  # Verificar si la celda está vacía
@@ -110,7 +110,7 @@ while running:
                 current_player = 1 if current_player == 2 else 2
 
     # Fondo de pantalla, dibujar la cuadrícula y movimientos, etcétera.
-    screen.fill(WHITE)
+    Pantalla.fill(Blanco)
     draw_grid()
     draw_moves()
 
@@ -119,10 +119,10 @@ while running:
     if winner:
         # Después de detectar un ganador, pero antes del reinicio del tablero.
         font = pygame.font.Font(None, 36)  # None usa la fuente predeterminada, 36 es el tamaño del texto.
-        text = font.render(f'Jugador {winner} gana!', True, BLACK)
-        text_rect = text.get_rect(center=(window_size[0] / 2, window_size[1] / 2))
-        screen.fill(WHITE)  # Opcional, dependiendo de cómo quieras que se vea el mensaje.
-        screen.blit(text, text_rect)
+        text = font.render(f'Jugador {winner} gana!', True, Negro)
+        text_rect = text.get_rect(center=(Tamaño_ventana[0] / 2, Tamaño_ventana[1] / 2))
+        Pantalla.fill(Blanco)  # Opcional, dependiendo de cómo quieras que se vea el mensaje.
+        Pantalla.blit(text, text_rect)
         pygame.display.flip()
         time.sleep(5)  # Muestra el mensaje durante 5 segundos antes de reiniciar.
         board = np.zeros((3, 3))  # Reiniciar el tablero.
