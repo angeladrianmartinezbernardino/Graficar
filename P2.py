@@ -89,7 +89,6 @@ def Mover_con_raton(Fila, Columna, Jugador):
     Tablero[Fila][Columna] = Jugador
     pass
 
-
 # Bucle principal del juego.
 Ejecucion = True
 Jugador_actual = 1
@@ -107,7 +106,7 @@ while Ejecucion:
             # Convertir la fila y columna clickeada a la posición en el tablero.
             if Tablero[Fila_clickeada][Columna_clickeada] == 0:  # Verificar si la celda está vacía.
                 Mover_con_raton(Fila_clickeada, Columna_clickeada, Jugador_actual)
-                Jugador_actual = 1 if Jugador_actual == 2 else 2
+                Jugador_actual = 1 if Jugador_actual == 2 else 2  # Cambiar jugador solo si se realizó un movimiento.
 
     # Fondo de pantalla, dibujar la cuadrícula y movimientos, etcétera.
     Pantalla.fill(Blanco)
@@ -118,7 +117,7 @@ while Ejecucion:
     Ganador = Verificar_ganador()
     if Ganador:
         # Después de detectar un ganador, pero antes del reinicio del tablero.
-        Fuente = pygame.font.Font(None, 36)  # None usa la fuente predeterminada, 36 es el tamaño del texto.
+        Fuente = pygame.font.Font(None, 36)
         Texto = Fuente.render(f'Jugador {Ganador} gana!', True, Negro)
         Texto_recto = Texto.get_rect(center=(Tamaño_ventana[0] / 2, Tamaño_ventana[1] / 2))
         Pantalla.fill(Blanco)  # Opcional, dependiendo de cómo quieras que se vea el mensaje.
@@ -126,10 +125,9 @@ while Ejecucion:
         pygame.display.flip()
         time.sleep(5)  # Muestra el mensaje durante 5 segundos antes de reiniciar.
         Tablero = np.zeros((3, 3))  # Reiniciar el tablero.
+        Jugador_actual = 1  # Restablecer al primer jugador después de reiniciar.
 
-    # Cambiar jugador.
-    Jugador_actual = 1 if Jugador_actual == 2 else 2
-
+    # No es necesario cambiar el jugador aquí, ya se maneja después de cada movimiento válido.
     # Actualizar la pantalla.
     pygame.display.flip()
 
