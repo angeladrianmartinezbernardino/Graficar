@@ -4,18 +4,15 @@ import time
 
 # Inicializar pygame.
 pygame.init()
-
 # Definir colores.
 Negro = (0, 0, 0)
 Blanco = (255, 255, 255)
 Rojo = (255, 0, 0)
 Azul = (0, 0, 255)
-
 # Establecer el tamaño de la ventana.
 Tamaño_ventana = (300, 300)
 Pantalla = pygame.display.set_mode(Tamaño_ventana)
 pygame.display.set_caption("Juego del gato")
-
 # Definir el tamaño de las celdas y el tablero.
 Tamaño_celda = 100
 Tablero = np.zeros((3, 3))
@@ -62,7 +59,6 @@ def Hacer_movimiento(Posicion, Jugador):
         Fila, Columa = 0, 1
     elif Posicion == 9:
         Fila, Columa = 0, 2
-
     if Tablero[Fila][Columa] == 0:
         Tablero[Fila][Columa] = Jugador
 
@@ -89,6 +85,7 @@ def Mover_con_raton(Fila, Columna, Jugador):
     Tablero[Fila][Columna] = Jugador
     pass
 
+
 # Bucle principal del juego.
 Ejecucion = True
 Jugador_actual = 1
@@ -99,20 +96,16 @@ while Ejecucion:
             Ejecucion = False
         if Evento.type == pygame.MOUSEBUTTONDOWN:
             Raton_x, Raton_y = pygame.mouse.get_pos()  # Obtener la posición del clic.
-
             Fila_clickeada = int(Raton_y // Tamaño_celda)
             Columna_clickeada = int(Raton_x // Tamaño_celda)
-
             # Convertir la fila y columna clickeada a la posición en el tablero.
             if Tablero[Fila_clickeada][Columna_clickeada] == 0:  # Verificar si la celda está vacía.
                 Mover_con_raton(Fila_clickeada, Columna_clickeada, Jugador_actual)
                 Jugador_actual = 1 if Jugador_actual == 2 else 2  # Cambiar jugador solo si se realizó un movimiento.
-
     # Fondo de pantalla, dibujar la cuadrícula y movimientos, etcétera.
     Pantalla.fill(Blanco)
     Dibujar_cuadricula()
     Dibujar_movimientos()
-
     # Verificar si hay ganador.
     Ganador = Verificar_ganador()
     if Ganador:
@@ -126,7 +119,6 @@ while Ejecucion:
         time.sleep(5)  # Muestra el mensaje durante 5 segundos antes de reiniciar.
         Tablero = np.zeros((3, 3))  # Reiniciar el tablero.
         Jugador_actual = 1  # Restablecer al primer jugador después de reiniciar.
-
     # No es necesario cambiar el jugador aquí, ya se maneja después de cada movimiento válido.
     # Actualizar la pantalla.
     pygame.display.flip()
