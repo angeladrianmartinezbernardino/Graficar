@@ -117,8 +117,14 @@ while running:
     # Verificar si hay ganador.
     winner = check_win()
     if winner:
-        print(f"¡El jugador {winner} ganó!")
-        time.sleep(5)
+        # Después de detectar un ganador, pero antes del reinicio del tablero.
+        font = pygame.font.Font(None, 36)  # None usa la fuente predeterminada, 36 es el tamaño del texto.
+        text = font.render(f'Jugador {winner} gana!', True, BLACK)
+        text_rect = text.get_rect(center=(window_size[0] / 2, window_size[1] / 2))
+        screen.fill(WHITE)  # Opcional, dependiendo de cómo quieras que se vea el mensaje.
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+        time.sleep(5)  # Muestra el mensaje durante 5 segundos antes de reiniciar.
         board = np.zeros((3, 3))  # Reiniciar el tablero.
 
     # Cambiar jugador.
