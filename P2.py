@@ -63,22 +63,21 @@ def Hacer_movimiento(Posicion, Jugador):
         Tablero[Fila][Columa] = Jugador
 
 
-# Función para verificar el estado del juego.
 def Verificar_ganador():
     # Verificar filas.
     for Fila in range(3):
         if Tablero[Fila][0] == Tablero[Fila][1] == Tablero[Fila][2] != 0:
-            return Tablero[Fila][0]
+            return 'X' if Tablero[Fila][0] == 1 else 'O'
     # Verificar columnas.
     for Columna in range(3):
         if Tablero[0][Columna] == Tablero[1][Columna] == Tablero[2][Columna] != 0:
-            return Tablero[0][Columna]
+            return 'X' if Tablero[0][Columna] == 1 else 'O'
     # Verificar diagonales.
     if Tablero[0][0] == Tablero[1][1] == Tablero[2][2] != 0:
-        return Tablero[0][0]
+        return 'X' if Tablero[0][0] == 1 else 'O'
     if Tablero[0][2] == Tablero[1][1] == Tablero[2][0] != 0:
-        return Tablero[0][2]
-    return 0
+        return 'X' if Tablero[0][2] == 1 else 'O'
+    return None
 
 
 def Mover_con_raton(Fila, Columna, Jugador):
@@ -111,7 +110,7 @@ while Ejecucion:
     if Ganador:
         # Después de detectar un ganador, pero antes del reinicio del tablero.
         Fuente = pygame.font.Font(None, 36)
-        Texto = Fuente.render(f'Jugador {Ganador} gana!', True, Negro)
+        Texto = Fuente.render(f'¡"{Ganador}" gana el juego!', True, Negro)
         Texto_recto = Texto.get_rect(center=(Tamaño_ventana[0] / 2, Tamaño_ventana[1] / 2))
         Pantalla.fill(Blanco)  # Opcional, dependiendo de cómo quieras que se vea el mensaje.
         Pantalla.blit(Texto, Texto_recto)
