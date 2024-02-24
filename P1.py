@@ -20,11 +20,11 @@ glTranslatef(0.0, 0.0, -5)
 def Dibujar_ejes():
     glLineWidth(2.0)  # Hace los ejes un poco más gruesos.
     glBegin(GL_LINES)
-    # Eje X
+    # Eje x.
     glColor3f(0.0, 0.0, 0.0)  # Negro.
     glVertex3fv((-5, 0, 0))
     glVertex3fv((5, 0, 0))
-    # Eje Y
+    # Eje y.
     glVertex3fv((0, -5, 0))
     glVertex3fv((0, 5, 0))
     glEnd()
