@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 import time
 
+# De Ángel Adrián Martínez Bernardino.
 # Inicializar pygame.
 pygame.init()
 # Definir colores.
