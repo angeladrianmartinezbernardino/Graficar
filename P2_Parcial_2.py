@@ -4,7 +4,6 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import random
 
-
 class Figura:
     def __init__(self, vertices, color):
         self.vertices = vertices
