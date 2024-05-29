@@ -7,32 +7,32 @@ import time
 
 # De Ángel Adrián Martínez Bernardino y Luis Carlos Prieto Juárez.
 
-# Inicializar pygame y OpenGL
+# Inicializar pygame y OpenGL.
 pygame.init()
 display = (300, 300)
 pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
-# Configurar la vista ortográfica
+# Configurar la vista ortográfica.
 gluOrtho2D(0, 300, 300, 0)
 
-# Definir colores en formato RGB OpenGL
+# Definir colores en formato RGB OpenGL.
 Negro = (0, 0, 0)
 Blanco = (1, 1, 1)
 Rojo = (1, 0, 0)
 Azul = (0, 0, 1)
 
-# Inicializar el tablero
+# Inicializar el tablero.
 Tablero = np.zeros((3, 3))
 
 def dibujar_cuadricula():
     glLineWidth(2)
     glColor3fv(Negro)
     glBegin(GL_LINES)
-    # Dibujar las líneas verticales de la cuadrícula
+    # Dibujar las líneas verticales de la cuadrícula.
     for x in range(1, 3):
         glVertex2f(x * 100, 0)
         glVertex2f(x * 100, 300)
-    # Dibujar las líneas horizontales de la cuadrícula
+    # Dibujar las líneas horizontales de la cuadrícula.
     for y in range(1, 3):
         glVertex2f(0, y * 100)
         glVertex2f(300, y * 100)
@@ -66,41 +66,41 @@ def reiniciar_juego():
     main()
 
 def main():
-    ejecucion = True
-    jugador_actual = 1
-    while ejecucion:
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                ejecucion = False
-            elif evento.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
+    Ejecucion = True
+    Jugador_actual = 1
+    while Ejecucion:
+        for Evento in pygame.event.get():
+            if Evento.type == pygame.QUIT:
+                Ejecucion = False
+            elif Evento.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]:
                 x, y = pygame.mouse.get_pos()
-                columna = x // 100
-                fila = y // 100
-                if Tablero[int(fila)][int(columna)] == 0:
-                    Tablero[int(fila)][int(columna)] = jugador_actual
-                    jugador_actual = 3 - jugador_actual  # Alterna entre 1 y 2
-                    ganador = verificar_ganador()
-                    if ganador:
-                        print(f'El jugador {ganador} ha ganado!')
+                Columna = x // 100
+                Fila = y // 100
+                if Tablero[int(Fila)][int(Columna)] == 0:
+                    Tablero[int(Fila)][int(Columna)] = Jugador_actual
+                    Jugador_actual = 3 - Jugador_actual  # Alterna entre 1 y 2.
+                    Ganador = verificar_ganador()
+                    if Ganador:
+                        print(f'¡El jugador {Ganador} ha ganado!')
                         pygame.display.flip()
                         time.sleep(5)
                         reiniciar_juego()
                     elif np.all(Tablero != 0):
-                        print('Empate!')
+                        print('¡Empate!')
                         pygame.display.flip()
                         time.sleep(5)
                         reiniciar_juego()
-        # Limpiar pantalla
+        # Limpiar pantalla.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glClearColor(1, 1, 1, 1)  # Fondo blanco
-        # Dibujar la cuadrícula y los movimientos
+        glClearColor(1, 1, 1, 1)  # Fondo blanco.
+        # Dibujar la cuadrícula y los movimientos.
         dibujar_cuadricula()
         dibujar_movimientos()
         pygame.display.flip()
         pygame.time.wait(10)
 
 def verificar_ganador():
-    # Verifica filas, columnas y diagonales para encontrar un ganador
+    # Verifica filas, columnas y diagonales para encontrar un ganador.
     for i in range(3):
         if Tablero[i][0] == Tablero[i][1] == Tablero[i][2] != 0:
             return Tablero[i][0]
