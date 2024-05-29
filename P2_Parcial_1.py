@@ -79,17 +79,27 @@ def main():
                 if Tablero[int(Fila)][int(Columna)] == 0:
                     Tablero[int(Fila)][int(Columna)] = Jugador_actual
                     Jugador_actual = 3 - Jugador_actual  # Alterna entre 1 y 2.
+                    # Limpiar pantalla.
+                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+                    glClearColor(1, 1, 1, 1)  # Fondo blanco.
+                    # Dibujar la cuadrícula y los movimientos.
+                    dibujar_cuadricula()
+                    dibujar_movimientos()
+                    pygame.display.flip()
                     Ganador = verificar_ganador()
                     if Ganador:
                         print(f'¡El jugador {Ganador} ha ganado!')
+                        pygame.time.wait(500)  # Espera breve para mostrar la última jugada.
                         pygame.display.flip()
                         time.sleep(5)
                         reiniciar_juego()
                     elif np.all(Tablero != 0):
                         print('¡Empate!')
+                        pygame.time.wait(500)  # Espera breve para mostrar la última jugada.
                         pygame.display.flip()
                         time.sleep(5)
                         reiniciar_juego()
+
         # Limpiar pantalla.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glClearColor(1, 1, 1, 1)  # Fondo blanco.
