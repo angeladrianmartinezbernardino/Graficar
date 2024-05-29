@@ -89,13 +89,13 @@ def main():
                     Ganador = verificar_ganador()
                     if Ganador:
                         print(f'¡El jugador {Ganador} ha ganado!')
-                        pygame.time.wait(500)  # Espera breve para mostrar la última jugada.
+                        pygame.time.wait(2500)  # Espera breve para mostrar la última jugada.
                         pygame.display.flip()
                         time.sleep(5)
                         reiniciar_juego()
                     elif np.all(Tablero != 0):
                         print('¡Empate!')
-                        pygame.time.wait(500)  # Espera breve para mostrar la última jugada.
+                        pygame.time.wait(2500)  # Espera breve para mostrar la última jugada.
                         pygame.display.flip()
                         time.sleep(5)
                         reiniciar_juego()
