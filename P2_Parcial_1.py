@@ -3,9 +3,9 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 import numpy as np
-import time
 
-# De Ángel Adrián Martínez Bernardino.
+# De Ángel Adrián Martínez Bernardino y Luis Carlos Prieto Juárez.
+
 # Inicializar pygame y OpenGL
 pygame.init()
 display = (300, 300)
