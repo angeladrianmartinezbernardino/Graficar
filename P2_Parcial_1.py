@@ -3,6 +3,7 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 import numpy as np
+import time
 
 # De Ángel Adrián Martínez Bernardino y Luis Carlos Prieto Juárez.
 
@@ -23,7 +24,6 @@ Azul = (0, 0, 1)
 # Inicializar el tablero
 Tablero = np.zeros((3, 3))
 
-
 def dibujar_cuadricula():
     glLineWidth(2)
     glColor3fv(Negro)
@@ -38,31 +38,32 @@ def dibujar_cuadricula():
         glVertex2f(300, y * 100)
     glEnd()
 
-
 def dibujar_movimientos():
     for Fila in range(3):
         for Columna in range(3):
-            centro_x = Columna * 100 + 50
-            centro_y = Fila * 100 + 50
+            Centro_x = Columna * 100 + 50
+            Centro_y = Fila * 100 + 50
             if Tablero[Fila][Columna] == 1:
                 glLineWidth(2)
                 glColor3fv(Rojo)
                 glBegin(GL_LINES)
-                glVertex2f(centro_x - 25, centro_y - 25)
-                glVertex2f(centro_x + 25, centro_y + 25)
-                glVertex2f(centro_x + 25, centro_y - 25)
-                glVertex2f(centro_x - 25, centro_y + 25)
+                glVertex2f(Centro_x - 25, Centro_y - 25)
+                glVertex2f(Centro_x + 25, Centro_y + 25)
+                glVertex2f(Centro_x + 25, Centro_y - 25)
+                glVertex2f(Centro_x - 25, Centro_y + 25)
                 glEnd()
             elif Tablero[Fila][Columna] == 2:
                 glColor3fv(Azul)
                 glBegin(GL_LINE_LOOP)
                 for i in range(360):
                     rad = np.radians(i)
-                    glVertex2f(np.cos(rad) * 37 + centro_x, np.sin(rad) * 37 + centro_y)
+                    glVertex2f(np.cos(rad) * 37 + Centro_x, np.sin(rad) * 37 + Centro_y)
                 glEnd()
 
-
-# Hay quw reemplazar las funciones existentes de manejo de eventos, movimiento y verificación de ganador según sea necesario.
+def reiniciar_juego():
+    global Tablero
+    Tablero = np.zeros((3, 3))
+    main()
 
 def main():
     ejecucion = True
@@ -81,19 +82,22 @@ def main():
                     ganador = verificar_ganador()
                     if ganador:
                         print(f'El jugador {ganador} ha ganado!')
-                        ejecucion = False  # O puedes reiniciar el juego aquí
-
+                        pygame.display.flip()
+                        time.sleep(5)
+                        reiniciar_juego()
+                    elif np.all(Tablero != 0):
+                        print('Empate!')
+                        pygame.display.flip()
+                        time.sleep(5)
+                        reiniciar_juego()
         # Limpiar pantalla
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glClearColor(1, 1, 1, 1)  # Fondo blanco
-
         # Dibujar la cuadrícula y los movimientos
         dibujar_cuadricula()
         dibujar_movimientos()
-
         pygame.display.flip()
         pygame.time.wait(10)
-
 
 def verificar_ganador():
     # Verifica filas, columnas y diagonales para encontrar un ganador
@@ -105,7 +109,6 @@ def verificar_ganador():
     if Tablero[0][0] == Tablero[1][1] == Tablero[2][2] != 0 or Tablero[0][2] == Tablero[1][1] == Tablero[2][0] != 0:
         return Tablero[1][1]
     return None
-
 
 if __name__ == "__main__":
     main()
