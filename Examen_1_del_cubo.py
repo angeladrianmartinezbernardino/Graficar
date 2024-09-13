@@ -71,7 +71,7 @@ def Dibujar_cubo(x, y):
         for Vertice in Cara:
             glVertex3fv(Vertices[Vertice])
     glEnd()
-    # Dibujar contorno del cubo en blanco
+    # Dibujar contorno del cubo en blanco.
     glColor3fv((1, 1, 1))  # Blanco para el contorno.
     glBegin(GL_LINE_LOOP)  # Contorno de la cara inferior.
     for v in [0, 1, 2, 3]:
