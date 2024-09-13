@@ -3,7 +3,9 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-# De Ángel Adrián Martínez Bernardino y Luis Carlos Prieto Juárez.
+# De Ángel Adrián Martínez Bernardino.
+# Práctica 1 del Parcial 1 ed Graficación.
+
 # Definir la configuración inicial de la ventana.
 Ancho, Altura = 1260, 600
 
