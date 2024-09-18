@@ -6,15 +6,15 @@ import math
 
 # Dimensiones de la ventana y del tablero
 Ancho, Altura = 424, 254
-Tamaño_Casilla_Ancho = 38.8  # Ancho aproximado de las casillas en píxeles
-Tamaño_Casilla_Alto = 22.4  # Alto aproximado de las casillas en píxeles
 Margen_X = 18
 Margen_Y = 15
+Tamaño_Casilla_Ancho = (Ancho - (2 * Margen_X)) / 10  # Ancho aproximado de las casillas en píxeles
+Tamaño_Casilla_Alto = (Altura - (2 * Margen_Y)) / 10  # Alto aproximado de las casillas en píxeles
 Tablero_Ancho = 10  # Número de casillas en el tablero
 Tablero_Alto = 10
 
 # Ángulo para la proyección isométrica (30 grados)
-angulo_iso = math.radians(30)
+angulo_isometrico = math.radians(30)
 
 
 # Función para inicializar PyOpenGL con ajuste a la ventana y perspectiva
