@@ -8,8 +8,8 @@ import math
 Ancho, Altura = 424, 254
 Margen_X = 18
 Margen_Y = 15
-Tamaño_Casilla_Ancho = (Ancho - (2 * Margen_X)) / 10  # Ancho aproximado de las casillas en píxeles
-Tamaño_Casilla_Alto = (Altura - (2 * Margen_Y)) / 10  # Alto aproximado de las casillas en píxeles
+Tamaño_Casilla_Ancho = (Ancho - (2 * Margen_X)) / 10  # Ancho de las casillas
+Tamaño_Casilla_Alto = (Altura - (2 * Margen_Y)) / 10  # Alto de las casillas
 Tablero_Ancho = 10  # Número de casillas en el tablero
 Tablero_Alto = 10
 
@@ -28,9 +28,15 @@ def Vistas():
 
 # Función para convertir las coordenadas 2D del tablero en coordenadas isométricas
 def isometrico(x, y):
-    x_iso = (x - y) * Tamaño_Casilla_Ancho / 2 + (Ancho / 2)
-    y_iso = (x + y) * Tamaño_Casilla_Alto / 2 + Margen_Y
-    return x_iso, y_iso
+    # Cálculo de las coordenadas isométricas
+    x_iso = (x - y) * (Tamaño_Casilla_Ancho / 2)
+    y_iso = (x + y) * (Tamaño_Casilla_Alto / 2)
+
+    # Ajustar con los márgenes
+    x_final = x_iso + (Ancho / 2)
+    y_final = y_iso + Margen_Y
+
+    return x_final, y_final
 
 
 # Función para dibujar el tablero (con líneas negras y casillas de fondo azul claro)
@@ -43,6 +49,7 @@ def Dibujar_grid():
 # Función para dibujar una casilla en una posición (x, y) en la vista isométrica
 def Dibujar_casilla(x, y):
     x_iso, y_iso = isometrico(x, y)
+
     # Dibujo de la casilla (color de fondo azul claro)
     glColor3fv((0.678, 0.847, 0.902))  # Azul claro
     glBegin(GL_QUADS)
@@ -62,31 +69,39 @@ def Dibujar_casilla(x, y):
     glEnd()
 
 
-# Datos de los barcos
+# Datos de los barcos, incluyendo orientación
 barcos = [
-    {"dimensiones": (3, 1), "coordenadas": (9, 7)},  # Barco 1 en (J, 8)
-    {"dimensiones": (3, 1), "coordenadas": (1, 3)},  # Barco 2 en (B, 4)
-    {"dimensiones": (4, 1), "coordenadas": (5, 4)}  # Barco 3 en (F, 5)
+    {"dimensiones": (3, 1), "coordenadas": (9, 7), "orientacion": "horizontal"},  # Barco 1 en (J, 8)
+    {"dimensiones": (3, 1), "coordenadas": (1, 3), "orientacion": "horizontal"},  # Barco 2 en (B, 4)
+    {"dimensiones": (4, 1), "coordenadas": (5, 4), "orientacion": "horizontal"}  # Barco 3 en (F, 5)
 ]
 
 
-# Función para dibujar un barco en una posición (x, y) en la vista isométrica
+# Función para dibujar un barco en una posición (x, y) con orientación
 def Dibujar_barco(barco):
     x, y = barco["coordenadas"]
     casillas_x, casillas_y = barco["dimensiones"]
+    orientacion = barco["orientacion"]
 
-    # Usamos las mismas coordenadas isométricas que para las casillas
     x_iso, y_iso = isometrico(x, y)
     ancho = casillas_x * Tamaño_Casilla_Ancho
     alto = casillas_y * Tamaño_Casilla_Alto
 
-    # Dibujo del barco (color rojo claro para diferenciar)
-    glColor3fv((1.0, 0.0, 0.0))  # Color rojo claro para los barcos
+    # Dibujo del barco con orientación (horizontal o vertical)
+    glColor3fv((1.0, 0.0, 0.0))  # Rojo para los barcos
     glBegin(GL_QUADS)
-    glVertex2f(x_iso, y_iso)
-    glVertex2f(x_iso + ancho / 2, y_iso + alto / 2)
-    glVertex2f(x_iso, y_iso + alto)
-    glVertex2f(x_iso - ancho / 2, y_iso + alto / 2)
+
+    if orientacion == "horizontal":
+        glVertex2f(x_iso, y_iso)
+        glVertex2f(x_iso + ancho / 2, y_iso + alto / 2)
+        glVertex2f(x_iso, y_iso + alto)
+        glVertex2f(x_iso - ancho / 2, y_iso + alto / 2)
+    elif orientacion == "vertical":
+        glVertex2f(x_iso, y_iso)
+        glVertex2f(x_iso + Tamaño_Casilla_Ancho / 2, y_iso + (alto / 2))
+        glVertex2f(x_iso, y_iso + alto)
+        glVertex2f(x_iso - Tamaño_Casilla_Ancho / 2, y_iso + (alto / 2))
+
     glEnd()
 
 
