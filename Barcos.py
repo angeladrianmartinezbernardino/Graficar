@@ -2,83 +2,111 @@ import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import math
 
-# De Ángel Adrián Martínez Bernardino.
-# Práctica 1 del Parcial 1 ed Graficación.
+# Dimensiones de la ventana y del tablero
+Ancho, Altura = 424, 254
+Tamaño_Casilla_Ancho = 38.8  # Ancho aproximado de las casillas en píxeles
+Tamaño_Casilla_Alto = 22.4  # Alto aproximado de las casillas en píxeles
+Margen_X = 18
+Margen_Y = 15
+Tablero_Ancho = 10  # Número de casillas en el tablero
+Tablero_Alto = 10
 
-# Definir la configuración inicial de la ventana.
-Ancho, Altura = 1260, 600
+# Ángulo para la proyección isométrica (30 grados)
+angulo_iso = math.radians(30)
 
 
-# Función para inicializar PyOpenGL.
+# Función para inicializar PyOpenGL con ajuste a la ventana y perspectiva
 def Vistas():
     glEnable(GL_DEPTH_TEST)
     glMatrixMode(GL_PROJECTION)
-    gluPerspective(50, (Ancho / Altura), 0.1, 50.0)
+    glLoadIdentity()
+    gluOrtho2D(0, Ancho, 0, Altura)  # Proyección ortográfica ajustada al tamaño de la ventana
     glMatrixMode(GL_MODELVIEW)
-    gluLookAt(5, 10, -10, 0, 0, 0, 0, 1, 0)
 
 
-# Función para dibujar el tablero isométrico.
+# Función para convertir las coordenadas 2D del tablero en coordenadas isométricas
+def isometrico(x, y):
+    x_iso = (x - y) * Tamaño_Casilla_Ancho / 2 + (Ancho / 2)
+    y_iso = (x + y) * Tamaño_Casilla_Alto / 2 + Margen_Y
+    return x_iso, y_iso
+
+
+# Función para dibujar el tablero (con líneas negras y casillas de fondo azul claro)
 def Dibujar_grid():
-    glBegin(GL_LINES)
-    # Dibuja las líneas horizontales.
-    for i in range(11):
-        if i == 0 or i == 10:
-            glColor3fv((1, 1, 1))  # Líneas blancas.
-        else:
-            glColor3fv((1, 1, 1))  # Líneas blancas.
-        glVertex3fv((i, 0, 0))
-        glVertex3fv((i, 0, 10))
-    # Dibuja las líneas verticales.
-    for j in range(11):
-        if j == 0 or j == 10:
-            glColor3fv((1, 1, 1))  # Líneas blancas.
-        else:
-            glColor3fv((1, 1, 1))  # Líneas blancas.
-        glVertex3fv((0, 0, j))
-        glVertex3fv((10, 0, j))
-    glEnd()
+    for i in range(Tablero_Ancho):
+        for j in range(Tablero_Alto):
+            Dibujar_casilla(i, j)
 
 
-# Función para dibujar un barco genérico basado en su longitud, posición y orientación.
-def Dibujar_barco(Longitud, x, y, Orientacion):
+# Función para dibujar una casilla en una posición (x, y) en la vista isométrica
+def Dibujar_casilla(x, y):
+    x_iso, y_iso = isometrico(x, y)
+    # Dibujo de la casilla (color de fondo azul claro)
+    glColor3fv((0.678, 0.847, 0.902))  # Azul claro
     glBegin(GL_QUADS)
-    for i in range(Longitud):
-        if Orientacion == 'horizontal':
-            glVertex3fv((x + i, 0, y))
-            glVertex3fv((x + i, 0, y + 1))
-            glVertex3fv((x + 1 + i, 0, y + 1))
-            glVertex3fv((x + 1 + i, 0, y))
-        else:  # orientacion == 'vertical'.
-            glVertex3fv((x, 0, y + i))
-            glVertex3fv((x, 0, y + 1 + i))
-            glVertex3fv((x + 1, 0, y + 1 + i))
-            glVertex3fv((x + 1, 0, y + i))
+    glVertex2f(x_iso, y_iso)
+    glVertex2f(x_iso + Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
+    glVertex2f(x_iso, y_iso + Tamaño_Casilla_Alto)
+    glVertex2f(x_iso - Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
+    glEnd()
+
+    # Dibujo de las líneas de la casilla (color de las líneas negras)
+    glColor3fv((0.0, 0.0, 0.0))  # Líneas negras
+    glBegin(GL_LINE_LOOP)
+    glVertex2f(x_iso, y_iso)
+    glVertex2f(x_iso + Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
+    glVertex2f(x_iso, y_iso + Tamaño_Casilla_Alto)
+    glVertex2f(x_iso - Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
     glEnd()
 
 
-def Dibujar_barco_1(x, y, orientacion):
-    glColor3fv((0.0, 0.5647, 0.5647)) # Azul menta.
-    Dibujar_barco(3, x, y, orientacion)  # Asumiendo que la longitud del barco 1 es 3.
+# Datos de los barcos
+barcos = [
+    {"dimensiones": (3, 1), "coordenadas": (9, 7)},  # Barco 1 en (J, 8)
+    {"dimensiones": (3, 1), "coordenadas": (1, 3)},  # Barco 2 en (B, 4)
+    {"dimensiones": (4, 1), "coordenadas": (5, 4)}  # Barco 3 en (F, 5)
+]
 
 
-def Dibujar_barco_2(x, y, orientacion):
-    glColor3fv((0.6353, 0.1216, 0.0314)) # Rojo cereza.
-    Dibujar_barco(3, x, y, orientacion)  # Asumiendo que la longitud del barco 2 es 3.
+# Función para dibujar un barco en una posición (x, y) en la vista isométrica
+def Dibujar_barco(barco):
+    x, y = barco["coordenadas"]
+    casillas_x, casillas_y = barco["dimensiones"]
+
+    # Usamos las mismas coordenadas isométricas que para las casillas
+    x_iso, y_iso = isometrico(x, y)
+    ancho = casillas_x * Tamaño_Casilla_Ancho
+    alto = casillas_y * Tamaño_Casilla_Alto
+
+    # Dibujo del barco (color rojo claro para diferenciar)
+    glColor3fv((1.0, 0.0, 0.0))  # Color rojo claro para los barcos
+    glBegin(GL_QUADS)
+    glVertex2f(x_iso, y_iso)
+    glVertex2f(x_iso + ancho / 2, y_iso + alto / 2)
+    glVertex2f(x_iso, y_iso + alto)
+    glVertex2f(x_iso - ancho / 2, y_iso + alto / 2)
+    glEnd()
 
 
-def Dibujar_barco_3(x, y, orientacion):
-    glColor3fv((0.1451, 0.7098, 0.2039)) # Verde oscuro.
-    Dibujar_barco(4, x, y, orientacion)  # Asumiendo que la longitud del barco 3 es 4.
+# Función para dibujar todos los barcos
+def Dibujar_barcos():
+    for barco in barcos:
+        Dibujar_barco(barco)
 
 
-# Modificación en la función principal para dibujar los barcos.
+# Función principal del programa
 def Main():
     pygame.init()
     pygame.display.set_mode((Ancho, Altura), DOUBLEBUF | OPENGL)
-    pygame.display.set_caption('Tablero isométrico para juego')
+    pygame.display.set_caption('Vista isométrica del tablero con barcos')
+
+    # Cambiar el fondo a blanco
+    glClearColor(1.0, 1.0, 1.0, 1.0)
+
     Vistas()
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -86,10 +114,8 @@ def Main():
                 return
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         Dibujar_grid()
-        # Ejemplo de cómo colocar los barcos.
-        Dibujar_barco_1(7, 0, 'horizontal')
-        Dibujar_barco_2(3, 8, 'horizontal')
-        Dibujar_barco_3(4, 4, 'horizontal')
+        Dibujar_barcos()
+
         pygame.display.flip()
         pygame.time.wait(10)
 
