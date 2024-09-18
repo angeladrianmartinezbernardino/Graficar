@@ -16,7 +16,6 @@ Tablero_Alto = 10
 # Ángulo para la proyección isométrica (30 grados)
 angulo_isometrico = math.radians(30)
 
-
 # Función para inicializar PyOpenGL con ajuste a la ventana y perspectiva
 def Vistas():
     glEnable(GL_DEPTH_TEST)
@@ -24,7 +23,6 @@ def Vistas():
     glLoadIdentity()
     gluOrtho2D(0, Ancho, 0, Altura)  # Proyección ortográfica ajustada al tamaño de la ventana
     glMatrixMode(GL_MODELVIEW)
-
 
 # Función para convertir las coordenadas 2D del tablero en coordenadas isométricas
 def isometrico(x, y):
@@ -38,13 +36,11 @@ def isometrico(x, y):
 
     return x_final, y_final
 
-
 # Función para dibujar el tablero (con líneas negras y casillas de fondo azul claro)
 def Dibujar_grid():
     for i in range(Tablero_Ancho):
         for j in range(Tablero_Alto):
             Dibujar_casilla(i, j)
-
 
 # Función para dibujar una casilla en una posición (x, y) en la vista isométrica
 def Dibujar_casilla(x, y):
@@ -68,7 +64,6 @@ def Dibujar_casilla(x, y):
     glVertex2f(x_iso - Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
     glEnd()
 
-
 # Datos de los barcos, incluyendo orientación
 barcos = [
     {"dimensiones": (3, 1), "coordenadas": (9, 7), "orientacion": "horizontal"},  # Barco 1 en (J, 8)
@@ -76,40 +71,40 @@ barcos = [
     {"dimensiones": (4, 1), "coordenadas": (5, 4), "orientacion": "horizontal"}  # Barco 3 en (F, 5)
 ]
 
-
 # Función para dibujar un barco en una posición (x, y) con orientación
 def Dibujar_barco(barco):
     x, y = barco["coordenadas"]
     casillas_x, casillas_y = barco["dimensiones"]
     orientacion = barco["orientacion"]
 
-    x_iso, y_iso = isometrico(x, y)
-    ancho = casillas_x * Tamaño_Casilla_Ancho
-    alto = casillas_y * Tamaño_Casilla_Alto
-
     # Dibujo del barco con orientación (horizontal o vertical)
     glColor3fv((1.0, 0.0, 0.0))  # Rojo para los barcos
     glBegin(GL_QUADS)
 
+    # Para orientación horizontal
     if orientacion == "horizontal":
-        glVertex2f(x_iso, y_iso)
-        glVertex2f(x_iso + ancho / 2, y_iso + alto / 2)
-        glVertex2f(x_iso, y_iso + alto)
-        glVertex2f(x_iso - ancho / 2, y_iso + alto / 2)
+        for i in range(casillas_x):
+            x_actual, y_actual = isometrico(x + i, y)
+            glVertex2f(x_actual, y_actual)
+            glVertex2f(x_actual + Tamaño_Casilla_Ancho / 2, y_actual + Tamaño_Casilla_Alto / 2)
+            glVertex2f(x_actual, y_actual + Tamaño_Casilla_Alto)
+            glVertex2f(x_actual - Tamaño_Casilla_Ancho / 2, y_actual + Tamaño_Casilla_Alto / 2)
+
+    # Para orientación vertical
     elif orientacion == "vertical":
-        glVertex2f(x_iso, y_iso)
-        glVertex2f(x_iso + Tamaño_Casilla_Ancho / 2, y_iso + (alto / 2))
-        glVertex2f(x_iso, y_iso + alto)
-        glVertex2f(x_iso - Tamaño_Casilla_Ancho / 2, y_iso + (alto / 2))
+        for i in range(casillas_y):
+            x_actual, y_actual = isometrico(x, y + i)
+            glVertex2f(x_actual, y_actual)
+            glVertex2f(x_actual + Tamaño_Casilla_Ancho / 2, y_actual + Tamaño_Casilla_Alto / 2)
+            glVertex2f(x_actual, y_actual + Tamaño_Casilla_Alto)
+            glVertex2f(x_actual - Tamaño_Casilla_Ancho / 2, y_actual + Tamaño_Casilla_Alto / 2)
 
     glEnd()
-
 
 # Función para dibujar todos los barcos
 def Dibujar_barcos():
     for barco in barcos:
         Dibujar_barco(barco)
-
 
 # Función principal del programa
 def Main():
@@ -133,7 +128,6 @@ def Main():
 
         pygame.display.flip()
         pygame.time.wait(10)
-
 
 if __name__ == '__main__':
     Main()
