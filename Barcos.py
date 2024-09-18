@@ -68,7 +68,7 @@ def Dibujar_casilla(x, y):
 barcos = [
     {"dimensiones": (3, 1), "coordenadas": (9, 7), "orientacion": "horizontal"},  # Barco 1 en (J, 8)
     {"dimensiones": (3, 1), "coordenadas": (1, 3), "orientacion": "horizontal"},  # Barco 2 en (B, 4)
-    {"dimensiones": (4, 1), "coordenadas": (5, 4), "orientacion": "horizontal"}  # Barco 3 en (F, 5)
+    {"dimensiones": (4, 1), "coordenadas": (5, 4), "orientacion": "vertical"}  # Barco 3 en (F, 5)
 ]
 
 # Función para dibujar un barco en una posición (x, y) con orientación
