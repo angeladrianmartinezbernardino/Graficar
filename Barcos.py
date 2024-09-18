@@ -14,7 +14,7 @@ Tablero_Ancho = 10  # Número de casillas en el tablero
 Tablero_Alto = 10
 
 # Ángulo para la proyección isométrica (30 grados)
-angulo_isometrico = math.radians(30)
+Angulo_isometrico = math.radians(30)
 
 # Función para inicializar PyOpenGL con ajuste a la ventana y perspectiva
 def Vistas():
@@ -25,16 +25,16 @@ def Vistas():
     glMatrixMode(GL_MODELVIEW)
 
 # Función para convertir las coordenadas 2D del tablero en coordenadas isométricas
-def isometrico(x, y):
+def Isometrico(x, y):
     # Cálculo de las coordenadas isométricas
-    x_iso = (x - y) * (Tamaño_Casilla_Ancho / 2)
-    y_iso = (x + y) * (Tamaño_Casilla_Alto / 2)
+    X_isometrico = (x - y) * (Tamaño_Casilla_Ancho / 2)
+    Y_isometrico = (x + y) * (Tamaño_Casilla_Alto / 2)
 
     # Ajustar con los márgenes
-    x_final = x_iso + (Ancho / 2)
-    y_final = y_iso + Margen_Y
+    X_final = X_isometrico + (Ancho / 2)
+    Y_final = Y_isometrico + Margen_Y
 
-    return x_final, y_final
+    return X_final, Y_final
 
 # Función para dibujar el tablero (con líneas negras y casillas de fondo azul claro)
 def Dibujar_grid():
@@ -44,24 +44,24 @@ def Dibujar_grid():
 
 # Función para dibujar una casilla en una posición (x, y) en la vista isométrica
 def Dibujar_casilla(x, y):
-    x_iso, y_iso = isometrico(x, y)
+    X_isometrico, Y_isometrico = Isometrico(x, y)
 
     # Dibujo de la casilla (color de fondo azul claro)
     glColor3fv((0.678, 0.847, 0.902))  # Azul claro
     glBegin(GL_QUADS)
-    glVertex2f(x_iso, y_iso)
-    glVertex2f(x_iso + Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
-    glVertex2f(x_iso, y_iso + Tamaño_Casilla_Alto)
-    glVertex2f(x_iso - Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
+    glVertex2f(X_isometrico, Y_isometrico)
+    glVertex2f(X_isometrico + Tamaño_Casilla_Ancho / 2, Y_isometrico + Tamaño_Casilla_Alto / 2)
+    glVertex2f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto)
+    glVertex2f(X_isometrico - Tamaño_Casilla_Ancho / 2, Y_isometrico + Tamaño_Casilla_Alto / 2)
     glEnd()
 
     # Dibujo de las líneas de la casilla (color de las líneas negras)
     glColor3fv((0.0, 0.0, 0.0))  # Líneas negras
     glBegin(GL_LINE_LOOP)
-    glVertex2f(x_iso, y_iso)
-    glVertex2f(x_iso + Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
-    glVertex2f(x_iso, y_iso + Tamaño_Casilla_Alto)
-    glVertex2f(x_iso - Tamaño_Casilla_Ancho / 2, y_iso + Tamaño_Casilla_Alto / 2)
+    glVertex2f(X_isometrico, Y_isometrico)
+    glVertex2f(X_isometrico + Tamaño_Casilla_Ancho / 2, Y_isometrico + Tamaño_Casilla_Alto / 2)
+    glVertex2f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto)
+    glVertex2f(X_isometrico - Tamaño_Casilla_Ancho / 2, Y_isometrico + Tamaño_Casilla_Alto / 2)
     glEnd()
 
 # Datos de los barcos, incluyendo orientación
@@ -84,7 +84,7 @@ def Dibujar_barco(barco):
     # Para orientación horizontal
     if orientacion == "horizontal":
         for i in range(casillas_x):
-            x_actual, y_actual = isometrico(x + i, y)
+            x_actual, y_actual = Isometrico(x + i, y)
             glVertex2f(x_actual, y_actual)
             glVertex2f(x_actual + Tamaño_Casilla_Ancho / 2, y_actual + Tamaño_Casilla_Alto / 2)
             glVertex2f(x_actual, y_actual + Tamaño_Casilla_Alto)
@@ -93,7 +93,7 @@ def Dibujar_barco(barco):
     # Para orientación vertical
     elif orientacion == "vertical":
         for i in range(casillas_y):
-            x_actual, y_actual = isometrico(x, y + i)
+            x_actual, y_actual = Isometrico(x, y + i)
             glVertex2f(x_actual, y_actual)
             glVertex2f(x_actual + Tamaño_Casilla_Ancho / 2, y_actual + Tamaño_Casilla_Alto / 2)
             glVertex2f(x_actual, y_actual + Tamaño_Casilla_Alto)
