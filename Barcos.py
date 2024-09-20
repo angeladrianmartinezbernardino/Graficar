@@ -85,7 +85,7 @@ def Dibujar_barco(barco):
     half_width = Tamaño_Casilla_Ancho / 2
     half_height = Tamaño_Casilla_Alto / 2
 
-    if orientacion == "horizontal":
+    if orientacion == "vertical":
         for i in range(longitud):
             X_isometrico, Y_isometrico = Isometrico(x + i, y)
             glBegin(GL_QUADS)
@@ -94,7 +94,7 @@ def Dibujar_barco(barco):
             glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.1)
             glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.1)
             glEnd()
-    elif orientacion == "vertical":
+    elif orientacion == "horizontal":
         for i in range(longitud):
             X_isometrico, Y_isometrico = Isometrico(x, y + i)
             glBegin(GL_QUADS)
