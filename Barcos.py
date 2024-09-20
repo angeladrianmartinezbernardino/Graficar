@@ -27,9 +27,9 @@ def Vistas():
 # Función para convertir las coordenadas 2D del tablero en coordenadas isométricas
 # Se invierte el eje Y para corregir la orientación
 def Isometrico(x, y):
-    # Cálculo de las coordenadas isométricas con el eje Y invertido
-    X_isometrico = (x - (Tablero_Alto - 1 - y)) * (Tamaño_Casilla_Ancho / 2)
-    Y_isometrico = (x + (Tablero_Alto - 1 - y)) * (Tamaño_Casilla_Alto / 2)
+    # Cálculo de las coordenadas isométricas con una rotación hacia la izquierda
+    X_isometrico = ((Tablero_Ancho - 1 - y) - x) * (Tamaño_Casilla_Ancho / 2)
+    Y_isometrico = (x + (Tablero_Ancho - 1 - y)) * (Tamaño_Casilla_Alto / 2)
 
     # Ajustar con los márgenes
     X_final = X_isometrico + (Ancho / 2)
