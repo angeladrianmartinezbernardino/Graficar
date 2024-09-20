@@ -69,9 +69,9 @@ def Dibujar_casilla(x, y):
 
 # Datos de los barcos, incluyendo longitud y orientación
 barcos = [
-    {"longitud": 3, "coordenadas": (0, 0), "orientacion": "vertical"},  # Barco 1 en (J, 8)
-    {"longitud": 3, "coordenadas": (4, 8), "orientacion": "vertical"},  # Barco 2 en (B, 4)
-    {"longitud": 4, "coordenadas": (2, 5), "orientacion": "vertical"}   # Barco 3 en (F, 5)
+    {"longitud": 3, "coordenadas": (9, 7), "orientacion": "vertical"},  # Barco 1 en (J, 8)
+    {"longitud": 3, "coordenadas": (1, 3), "orientacion": "vertical"},  # Barco 2 en (B, 4)
+    {"longitud": 4, "coordenadas": (5, 4), "orientacion": "vertical"}   # Barco 3 en (F, 5)
 ]
 
 # Función para dibujar un barco en una posición (x, y) con orientación
@@ -85,7 +85,7 @@ def Dibujar_barco(barco):
     half_width = Tamaño_Casilla_Ancho / 2
     half_height = Tamaño_Casilla_Alto / 2
 
-    if orientacion == "vertical":
+    if orientacion == "horizontal":
         for i in range(longitud):
             X_isometrico, Y_isometrico = Isometrico(x + i, y)
             glBegin(GL_QUADS)
@@ -94,7 +94,7 @@ def Dibujar_barco(barco):
             glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.1)
             glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.1)
             glEnd()
-    elif orientacion == "horizontal":
+    elif orientacion == "vertical":
         for i in range(longitud):
             X_isometrico, Y_isometrico = Isometrico(x, y + i)
             glBegin(GL_QUADS)
@@ -134,3 +134,4 @@ def Main():
 
 if __name__ == '__main__':
     Main()
+
