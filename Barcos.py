@@ -28,8 +28,9 @@ def Vistas():
 # Se invierte el eje Y para corregir la orientación
 def Isometrico(x, y):
     # Cálculo de las coordenadas isométricas con una rotación hacia la izquierda
-    X_isometrico = ((Tablero_Ancho - 1 - y) - x) * (Tamaño_Casilla_Ancho / 2)
-    Y_isometrico = (x + (Tablero_Ancho - 1 - y)) * (Tamaño_Casilla_Alto / 2)
+    # Aquí invertimos el eje X restando el valor de x respecto al ancho del tablero
+    X_isometrico = ((Tablero_Ancho - 1 - y) - (Tablero_Ancho - 1 - x)) * (Tamaño_Casilla_Ancho / 2)
+    Y_isometrico = ((Tablero_Ancho - 1 - x) + (Tablero_Ancho - 1 - y)) * (Tamaño_Casilla_Alto / 2)
 
     # Ajustar con los márgenes
     X_final = X_isometrico + (Ancho / 2)
