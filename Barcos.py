@@ -26,6 +26,9 @@ def Vistas():
 
 # Función para convertir las coordenadas 2D del tablero en coordenadas isométricas
 def Isometrico(x, y):
+    # Invertir el eje Y
+    y = (Tablero_Alto - 1) - y  # Invertir Y
+
     # Cálculo de las coordenadas isométricas
     X_isometrico = (x - y) * (Tamaño_Casilla_Ancho / 2)
     Y_isometrico = (x + y) * (Tamaño_Casilla_Alto / 2)
@@ -134,4 +137,3 @@ def Main():
 
 if __name__ == '__main__':
     Main()
-
