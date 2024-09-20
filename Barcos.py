@@ -25,13 +25,11 @@ def Vistas():
     glMatrixMode(GL_MODELVIEW)
 
 # Función para convertir las coordenadas 2D del tablero en coordenadas isométricas
+# Se invierte el eje Y para corregir la orientación
 def Isometrico(x, y):
-    # Invertir el eje Y
-    y = (Tablero_Alto - 1) - y  # Invertir Y
-
-    # Cálculo de las coordenadas isométricas
-    X_isometrico = (x - y) * (Tamaño_Casilla_Ancho / 2)
-    Y_isometrico = (x + y) * (Tamaño_Casilla_Alto / 2)
+    # Cálculo de las coordenadas isométricas con el eje Y invertido
+    X_isometrico = (x - (Tablero_Alto - 1 - y)) * (Tamaño_Casilla_Ancho / 2)
+    Y_isometrico = (x + (Tablero_Alto - 1 - y)) * (Tamaño_Casilla_Alto / 2)
 
     # Ajustar con los márgenes
     X_final = X_isometrico + (Ancho / 2)
