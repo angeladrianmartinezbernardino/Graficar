@@ -34,6 +34,15 @@ def Isometrico(x, y):
     Y_final = Y_isometrico + Margen_Y
     return X_final, Y_final
 
+# Función para convertir las coordenadas 3D del tablero en coordenadas isométricas
+def Isometrico3D(x, y, z):
+    X_isometrico = (x - y) * (Tamaño_Casilla_Ancho / 2)
+    Y_isometrico = (x + y) * (Tamaño_Casilla_Alto / 2) - z * Tamaño_Casilla_Alto
+    # Ajustar con los márgenes
+    X_final = X_isometrico + (Ancho / 2)
+    Y_final = Y_isometrico + Margen_Y
+    return X_final, Y_final
+
 # Función para dibujar el tablero
 def Dibujar_grid():
     for i in range(Tablero_Ancho):
@@ -64,54 +73,54 @@ def Dibujar_casilla(x, y):
 
 # Función para dibujar un cubo en una posición (x, y) en la vista isométrica
 def Dibujar_cubo(x, y):
-    X_isometrico, Y_isometrico = Isometrico(x, y)
-    half_width = Tamaño_Casilla_Ancho / 2
-    half_height = Tamaño_Casilla_Alto / 2
+    # Definir los vértices del cubo en coordenadas de grilla
+    h = 1  # Altura del cubo en unidades de grilla
+    Vertices = [
+        [x, y, 0],         # 0
+        [x + 1, y, 0],     # 1
+        [x + 1, y + 1, 0], # 2
+        [x, y + 1, 0],     # 3
+        [x, y, h],         # 4
+        [x + 1, y, h],     # 5
+        [x + 1, y + 1, h], # 6
+        [x, y + 1, h]      # 7
+    ]
 
-    # Dibujo del cubo completo
+    # Convertir los vértices a coordenadas de pantalla
+    Screen_Vertices = []
+    for vx, vy, vz in Vertices:
+        sx, sy = Isometrico3D(vx, vy, vz)
+        Screen_Vertices.append((sx, sy))
+
+    # Definir las caras del cubo
+    Faces = [
+        [0, 1, 5, 4],  # Cara frontal
+        [1, 2, 6, 5],  # Cara derecha
+        [4, 5, 6, 7],  # Cara superior
+        # Puedes agregar más caras si es necesario
+    ]
+
+    # Dibujar las caras del cubo
     glColor3fv((1.0, 0.0, 0.0))  # Rojo para las caras del cubo
-
-    # Caras del cubo (superior y laterales)
     glBegin(GL_QUADS)
-    # Cara superior
-    glVertex3f(X_isometrico, Y_isometrico, 0.1)
-    glVertex3f(X_isometrico + half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.1)
-    glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.1)
-
-    # Cara lateral derecha
-    glVertex3f(X_isometrico + half_width, Y_isometrico + half_height, 0.0)
-    glVertex3f(X_isometrico + half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.0)
-
-    # Cara lateral izquierda
-    glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.0)
-    glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.0)
+    for face in Faces:
+        for vertex in face:
+            sx, sy = Screen_Vertices[vertex]
+            glVertex3f(sx, sy, 0.0)
     glEnd()
 
-    # Dibujo del contorno del cubo en negro
-    glColor3fv((0.0, 0.0, 0.0))  # Negro para el contorno
+    # Dibujar las aristas del cubo
+    Edges = [
+        [0, 1], [1, 2], [2, 3], [3, 0],
+        [4, 5], [5, 6], [6, 7], [7, 4],
+        [0, 4], [1, 5], [2, 6], [3, 7]
+    ]
+    glColor3fv((0.0, 0.0, 0.0))  # Negro para las aristas
     glBegin(GL_LINES)
-    # Contorno superior
-    glVertex3f(X_isometrico, Y_isometrico, 0.1)
-    glVertex3f(X_isometrico + half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico + half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.1)
-    glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico, 0.1)
-
-    # Contorno de los lados del cubo
-    glVertex3f(X_isometrico + half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico + half_width, Y_isometrico + half_height, 0.0)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.1)
-    glVertex3f(X_isometrico, Y_isometrico + Tamaño_Casilla_Alto, 0.0)
-    glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.1)
-    glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.0)
+    for edge in Edges:
+        for vertex in edge:
+            sx, sy = Screen_Vertices[vertex]
+            glVertex3f(sx, sy, 0.0)
     glEnd()
 
 # Función para mover el cubo
