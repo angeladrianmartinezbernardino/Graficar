@@ -90,7 +90,7 @@ def Dibujar_Cubo(x, y):
         (5, 4, 7, 6),  # Cara trasera
         (4, 0, 3, 7),  # Cara izquierda
         (3, 2, 6, 7),  # Cara superior
-        # (0, 1, 5, 4),  # Cara inferior (no visible)
+        (0, 1, 5, 4),  # Cara inferior (no visible)
     ]
     # Dibuja las caras del cubo
     glColor3fv((1, 0, 0))  # Rojo.
