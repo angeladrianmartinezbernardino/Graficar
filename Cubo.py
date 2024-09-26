@@ -114,13 +114,13 @@ def Dibujar_Cubo(x, y):
 
 # Función para mover el cubo.
 def Mover_cubo(tecla, Posicion_cubo):
-    if tecla == pygame.K_LEFT and Posicion_cubo[0] > 0:
+    if tecla == pygame.K_DOWN and Posicion_cubo[0] > 0:
         Posicion_cubo[0] -= 1
-    if tecla == pygame.K_RIGHT and Posicion_cubo[0] < Tablero_Eje_X - 1:
+    if tecla == pygame.K_UP and Posicion_cubo[0] < Tablero_Eje_X - 1:
         Posicion_cubo[0] += 1
-    if tecla == pygame.K_UP and Posicion_cubo[1] < Tablero_Eje_Y - 1:
+    if tecla == pygame.K_LEFT and Posicion_cubo[1] < Tablero_Eje_Y - 1:
         Posicion_cubo[1] += 1
-    if tecla == pygame.K_DOWN and Posicion_cubo[1] > 0:
+    if tecla == pygame.K_RIGHT and Posicion_cubo[1] > 0:
         Posicion_cubo[1] -= 1
 
 # Función principal del programa.
