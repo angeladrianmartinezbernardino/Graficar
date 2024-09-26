@@ -68,21 +68,23 @@ def Dibujar_Casilla(x, y):
     glVertex3f(X_isometrico - Mitad_X, Y_isometrico + Mitad_Y, z)
     glEnd()
 
-# Función para dibujar el cubo.
+# Función para dibujar el cubo con líneas visibles.
 def Dibujar_Cubo(x, y):
     # Definir los vértices del cubo en coordenadas 3D.
     vertices = [
-        (x,     y,     0),  # Inferior frontal izquierdo
-        (x+1,   y,     0),  # Inferior frontal derecho
-        (x+1,   y,     1),  # Superior frontal derecho
-        (x,     y,     1),  # Superior frontal izquierdo
-        (x,     y+1,   0),  # Inferior trasero izquierdo
-        (x+1,   y+1,   0),  # Inferior trasero derecho
-        (x+1,   y+1,   1),  # Superior trasero derecho
-        (x,     y+1,   1),  # Superior trasero izquierdo
+        (x, y, 0),  # Inferior frontal izquierdo
+        (x + 1, y, 0),  # Inferior frontal derecho
+        (x + 1, y, 1),  # Superior frontal derecho
+        (x, y, 1),  # Superior frontal izquierdo
+        (x, y + 1, 0),  # Inferior trasero izquierdo
+        (x + 1, y + 1, 0),  # Inferior trasero derecho
+        (x + 1, y + 1, 1),  # Superior trasero derecho
+        (x, y + 1, 1),  # Superior trasero izquierdo
     ]
+
     # Proyectar los vértices a coordenadas 2D (añadiendo Z=0)
     proyectados = [Isometrico3D(v[0], v[1], v[2]) + (0.0,) for v in vertices]
+
     # Definir las caras del cubo.
     caras = [
         (0, 1, 2, 3),  # Cara frontal
@@ -92,20 +94,26 @@ def Dibujar_Cubo(x, y):
         (3, 2, 6, 7),  # Cara superior
         (0, 1, 5, 4),  # Cara inferior (no visible)
     ]
-    # Dibuja las caras del cubo
-    glColor3fv((1, 0, 0))  # Rojo.
+
+    # Dibuja las caras del cubo.
+    glColor3fv((1, 0, 0))  # Rojo para las caras del cubo.
     glBegin(GL_QUADS)
     for cara in caras:
         for vertice in cara:
             glVertex3f(*proyectados[vertice])
     glEnd()
-    # Dibuja las aristas del cubo.
+
+    # Dibuja las aristas del cubo (líneas).
     aristas = [
         (0, 1), (1, 2), (2, 3), (3, 0),  # Cara frontal
         (4, 5), (5, 6), (6, 7), (7, 4),  # Cara trasera
         (0, 4), (1, 5), (2, 6), (3, 7),  # Aristas laterales
     ]
-    glColor3fv((0, 0, 0))  # Blanco para las aristas.
+
+    # Ajuste del color de las líneas
+    glColor3fv((0, 0, 0))  # Negro para las líneas.
+    glLineWidth(2)  # Aumenta el grosor de las líneas para mayor visibilidad.
+
     glBegin(GL_LINES)
     for arista in aristas:
         glVertex3f(*proyectados[arista[0]])
