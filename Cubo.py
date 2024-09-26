@@ -4,6 +4,8 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import math
 
+# Ángel Adrián Martínez Bernardino
+
 # Dimensiones de la ventana y del tablero.
 Eje_X_Programa = 424
 Eje_Y_Programa = 254

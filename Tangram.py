@@ -35,7 +35,7 @@ class App:
             glClear(GL_COLOR_BUFFER_BIT)
             glMatrixMode(GL_MODELVIEW)
 
-            glRotatef(rtri, 0.0, 1.0, 0.0)
+            # glRotatef(rtri, 0.0, 1.0, 0.0)
 
             glColor3f(0.2,1,1)
             glBegin(GL_TRIANGLES)
