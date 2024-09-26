@@ -105,7 +105,7 @@ def Dibujar_Cubo(x, y):
         (4, 5), (5, 6), (6, 7), (7, 4),  # Cara trasera
         (0, 4), (1, 5), (2, 6), (3, 7),  # Aristas laterales
     ]
-    glColor3fv((1, 1, 1))  # Blanco para las aristas.
+    glColor3fv((0, 0, 0))  # Blanco para las aristas.
     glBegin(GL_LINES)
     for arista in aristas:
         glVertex3f(*proyectados[arista[0]])
