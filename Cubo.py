@@ -11,7 +11,7 @@ Margen_Eje_X_Programa_Respecto_Tablero_Isometrico = 18
 Margen_Eje_Y_Programa_Respecto_Tablero_Isometrico = 15
 Tamaño_Casilla_X = (Eje_X_Programa - (2 * Margen_Eje_X_Programa_Respecto_Tablero_Isometrico)) / 10
 Tamaño_Casilla_Y = (Eje_Y_Programa - (2 * Margen_Eje_Y_Programa_Respecto_Tablero_Isometrico)) / 10
-Tablero_Eje_X = 15
+Tablero_Eje_X = 10
 Tablero_Eje_Y = 10
 
 # Ángulo para la proyección isométrica (30 grados).
