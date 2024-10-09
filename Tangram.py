@@ -87,6 +87,7 @@ class App:
             glVertex3f(0.0, -0.5, 0.0)  # Bottom right
             glEnd()
             glFlush()
+
             #refrescar pantalla
             pg.display.flip()
 
