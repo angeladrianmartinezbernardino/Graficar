@@ -35,9 +35,7 @@ class App:
             glClear(GL_COLOR_BUFFER_BIT)
             glMatrixMode(GL_MODELVIEW)
 
-            # glRotatef(rtri, 0.0, 1.0, 0.0)
-
-            glColor3f(0.2,1,1)
+            glColor3f(0,0.5,0)
             glBegin(GL_TRIANGLES)
             glVertex3f(0.0, 0.0, 0.0) # Top
             glVertex3f(-0.5, 0.5, 0.0) # Bottom Left
@@ -45,14 +43,14 @@ class App:
             glEnd()
 
             #glLoadIdentity()
-            glColor3f(1, 0, 0)
+            glColor3f(1, 0.25, 0)
             glBegin(GL_TRIANGLES)
             glVertex3f(0.0, 0.0, 0.0)  # Top
             glVertex3f(-0.5, -0.5, 0.0)  # Bottom Left
             glVertex3f(-0.5, 0.5, 0.0)  # Bottom right
             glEnd()
 
-            glColor3f(0, 1, 0)
+            glColor3f(1, 0, 0)
             glBegin(GL_TRIANGLES)
             glVertex3f(0.25, 0.25, 0.0)  # Top
             glVertex3f(0.5, 0.5, 0.0)  # Bottom Left
@@ -67,14 +65,14 @@ class App:
             glVertex3f(0.25, -0.25, 0.0)
             glEnd()
 
-            glColor3f(1, 0, 0.5)
+            glColor3f(0.5, 0, 1)
             glBegin(GL_TRIANGLES)
             glVertex3f(0.0, 0.0, 0.0)  # Top
             glVertex3f(0.25, -0.25, 0.0)  # Bottom Left
             glVertex3f(-0.25, -0.25, 0.0)  # Bottom right
             glEnd()
 
-            glColor3f(1, 1, 1)
+            glColor3f(0, 0, 1)
             glBegin(GL_QUADS)
             glVertex3f(-0.25, -0.25, 0.0)
             glVertex3f(0.25, -0.25, 0.0)
@@ -82,7 +80,7 @@ class App:
             glVertex3f(-0.5, -0.5, 0.0)
             glEnd()
 
-            glColor3f(0, 1, 0.5)
+            glColor3f(1, 0, 1)
             glBegin(GL_TRIANGLES)
             glVertex3f(0.5, 0.0, 0.0)  # Top
             glVertex3f(0.5, -0.5, 0.0)  # Bottom Left
