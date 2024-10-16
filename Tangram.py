@@ -55,9 +55,9 @@ class App:
             # Triángulo pequeño morado oscuro.
             glColor3f(0.5, 0, 1)
             glBegin(GL_TRIANGLES)
-            glVertex3f(0.0, 0.0, 0.0)  # Top
-            glVertex3f(0.25, -0.25, 0.0)  # Bottom Left
-            glVertex3f(-0.25, -0.25, 0.0)  # Bottom right
+            glVertex3f(0.0, 0.0, 0.0)
+            glVertex3f(0.25, -0.25, 0.0)
+            glVertex3f(-0.25, -0.25, 0.0)
             glEnd()
             # Romboide azul oscuro.
             glColor3f(0, 0, 1)
