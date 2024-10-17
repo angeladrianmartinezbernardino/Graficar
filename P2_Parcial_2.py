@@ -32,7 +32,7 @@ class Figura:
 
 def dibujar_figuras(figuras):
     for figura in figuras:
-        figura.dibujar()
+        figura.Dibujar()
 
 
 def main():
@@ -62,7 +62,7 @@ def main():
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        # Movimiento de las figuras
+        # Movimiento de las Figuras
         for figura in figuras:
             figura.mover(bounds)
 

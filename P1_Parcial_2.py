@@ -4,7 +4,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 
-# Definición de las figuras del tangram
+# Definición de las Figuras del tangram
 def dibujar_figuras():
     # Figura 1 - Triángulo grande naranja.
     glBegin(GL_TRIANGLES)
