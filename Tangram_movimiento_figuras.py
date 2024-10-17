@@ -37,7 +37,7 @@ class App:
         display = (800, 600)
         gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
         glTranslatef(0.0, 0.0, -2)
-        pg.display.set_caption("Dibujar tangram 2D con OpenGL")
+        pg.display.set_caption("Tangram 2D con OpenGL movible con las teclas de dirección del teclado")
         self.clock = pg.time.Clock()
         glClearColor(0.0, 0.0, 0.0, 1)
 
