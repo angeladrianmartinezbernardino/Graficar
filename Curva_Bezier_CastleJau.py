@@ -16,7 +16,7 @@ def CastleJau(input_points, t):
     s = []
     for i in range(l - 1):
         p = (1.0 - t) * input_points[i] + t * input_points[i + 1]
-        s.append(p.astype(float))  # Aseguramos que sea un array de floats
+        s.append(p.astype(float))  # Aseguramos que sea un array de floats.
     return CastleJau(s, t)
 
 def init():
