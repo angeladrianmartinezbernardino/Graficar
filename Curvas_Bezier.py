@@ -1,7 +1,8 @@
 import pygame as pg
-import math
+from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import math
 
 class App:
     def __init__(self):
