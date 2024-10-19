@@ -1,62 +1,88 @@
 import pygame
 from pygame.locals import *
 from OpenGL.GL import *
-from OpenGL.GLUT import *
-import numpy as np
+from OpenGL.GLU import *
 
-# Algoritmo de CastleJau para calcular la curva de Bézier.
-def CastleJau(Puntos, t):
-    while len(Puntos) > 1:
-        Nuevos_puntos = []
-        for i in range(len(Puntos) - 1):
-            Nuevo_punto = (1 - t) * np.array(Puntos[i]) + t * np.array(Puntos[i + 1])
-            Nuevos_puntos.append(Nuevo_punto)
-        Puntos = Nuevos_puntos
-    return Puntos[0]
 
-# Función para dibujar la curva de Bézier con n puntos de control.
-def Dinujar_curva_Bezier(Puntos, Numero_segmentos=100):
+# Algoritmo de CastleJau
+def CastleJau(input, t):
+    i = 0
+    s = []
+    l = len(input)
+    if (l == 0):
+        return None
+    if (l == 1):
+        return input[0]
+    if (t < 0.0 or t > 1.0):
+        return None
+    while (i < l):
+        if ((i + 1) < l):
+            x = (1.0 - t) * input[i][0] + t * input[i + 1][0]
+            y = (1.0 - t) * input[i][1] + t * input[i + 1][1]
+            s.append((x, y))
+        i += 1
+    if len(s) == 1:
+        return s[0]
+    return CastleJau(s, t)
+
+
+# Función para dibujar la curva de Bézier
+def draw_bezier_curve(points):
+    if len(points) < 2:
+        return
+    glColor3f(1.0, 0.0, 0.0)  # Color rojo para la curva
     glBegin(GL_LINE_STRIP)
-    for i in range(Numero_segmentos + 1):
-        t = i / Numero_segmentos
-        Punto_Bezier = CastleJau(Puntos, t)
-        glVertex2f(Punto_Bezier[0], Punto_Bezier[1])
+    for t in range(101):
+        t /= 100.0
+        p = CastleJau(points, t)
+        if p:
+            glVertex2f(p[0], p[1])
     glEnd()
 
-# Inicialización de la ventana y manejo de eventos.
+
+# Función para dibujar los puntos de control
+def draw_control_points(points):
+    glColor3f(0.0, 1.0, 0.0)  # Color verde para los puntos
+    glPointSize(5)
+    glBegin(GL_POINTS)
+    for p in points:
+        glVertex2f(p[0], p[1])
+    glEnd()
+
+
 def main():
     pygame.init()
-    Pantalla = pygame.display.set_mode((800, 600), DOUBLEBUF | OPENGL)
-    pygame.display.set_caption("Curva de Bézier con CastleJau")
-    glMatrixMode(GL_PROJECTION)
-    glLoadIdentity()
-    glOrtho(0, 800, 600, 0, -1, 1)
-    glMatrixMode(GL_MODELVIEW)
-    Puntos = []
+    screen = pygame.display.set_mode((800, 600), DOUBLEBUF | OPENGL)
+    pygame.display.set_caption("Curva de Bézier con PyOpenGL")
+
+    gluOrtho2D(0, 800, 0, 600)  # Configuración del espacio de coordenadas
+    control_points = []  # Lista para almacenar los puntos de control
+
     running = True
     while running:
-        for Evento in pygame.event.get():
-            if Evento.type == QUIT:
+        for event in pygame.event.get():
+            if event.type == QUIT:
                 running = False
-            elif Evento.type == MOUSEBUTTONDOWN:
-                if Evento.button == 1:  # Click izquierdo para agregar puntos de control.
-                    x, y = Evento.pos
-                    Puntos.append((x, y))
-                elif Evento.button == 3:  # Click derecho para limpiar los puntos.
-                    Puntos = []
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        # Dibujar puntos de control.
-        glPointSize(5)
-        glBegin(GL_POINTS)
-        for point in Puntos:
-            glVertex2f(point[0], point[1])
-        glEnd()
-        # Dibujar la curva de Bézier.
-        if len(Puntos) >= 2:
-            Dinujar_curva_Bezier(Puntos)
+            elif event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:  # Botón izquierdo para añadir puntos de control
+                    x, y = pygame.mouse.get_pos()
+                    control_points.append((x, 600 - y))  # Ajuste de coordenadas para PyOpenGL
+                elif event.button == 3:  # Botón derecho para reiniciar los puntos de control
+                    control_points.clear()
+
+        glClear(GL_COLOR_BUFFER_BIT)
+
+        # Dibuja los puntos de control
+        draw_control_points(control_points)
+
+        # Dibuja la curva de Bézier si hay al menos dos puntos de control
+        if len(control_points) >= 2:
+            draw_bezier_curve(control_points)
+
         pygame.display.flip()
-        pygame.time.wait(10)
+
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()
