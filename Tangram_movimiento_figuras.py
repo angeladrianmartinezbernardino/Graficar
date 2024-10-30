@@ -204,7 +204,7 @@ class App:
             glFlush()
             pg.display.flip()
             self.clock.tick(60)
-        self.quit()
+        self.Salir()
 
     def Seleccionar_figura(self, x, y):
         for Figura in self.Figuras:
@@ -212,7 +212,7 @@ class App:
                 self.Figura_seleccionada = Figura
                 break
 
-    def quit(self):
+    def Salir(self):
         pg.quit()
 
 if __name__ == "__main__":
