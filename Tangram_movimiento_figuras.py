@@ -160,53 +160,56 @@ class App:
                     x = (x / 400) - 1
                     y = 1 - (y / 300)
                     self.Seleccionar_figura(x, y)
-                elif Evento.type == pg.KEYDOWN:  # Movimiento y rotación con teclas
-                    if self.Figura_seleccionada:
-                        dx = dy = 0
-                        if Evento.key == pg.K_LEFT:
-                            dx = -0.05
-                        elif Evento.key == pg.K_RIGHT:
-                            dx = 0.05
-                        elif Evento.key == pg.K_UP:
-                            dy = 0.05
-                        elif Evento.key == pg.K_DOWN:
-                            dy = -0.05
-                        if dx != 0 or dy != 0:
-                            # Mover figura y verificar colisiones
-                            self.Figura_seleccionada.Mover_figura(dx, dy)
-                            colision = False
-                            for figura in self.Figuras:
-                                if figura != self.Figura_seleccionada:
-                                    if self.Figura_seleccionada.colision_con_otro(figura):
-                                        colision = True
-                                        break
-                            if colision:
-                                # Revertir movimiento si hay colisión
-                                self.Figura_seleccionada.Mover_figura(-dx, -dy)
-                        elif Evento.key == pg.K_l:
-                            # Rotar a la izquierda y verificar colisiones
-                            self.Figura_seleccionada.Rotar_figura(-5)
-                            colision = False
-                            for figura in self.Figuras:
-                                if figura != self.Figura_seleccionada:
-                                    if self.Figura_seleccionada.colision_con_otro(figura):
-                                        colision = True
-                                        break
-                            if colision:
-                                # Revertir rotación si hay colisión
-                                self.Figura_seleccionada.Rotar_figura(5)
-                        elif Evento.key == pg.K_r:
-                            # Rotar a la derecha y verificar colisiones
-                            self.Figura_seleccionada.Rotar_figura(5)
-                            colision = False
-                            for figura in self.Figuras:
-                                if figura != self.Figura_seleccionada:
-                                    if self.Figura_seleccionada.colision_con_otro(figura):
-                                        colision = True
-                                        break
-                            if colision:
-                                # Revertir rotación si hay colisión
-                                self.Figura_seleccionada.Rotar_figura(-5)
+
+            # Obtener el estado actual de todas las teclas
+            keys = pg.key.get_pressed()
+
+            if self.Figura_seleccionada:
+                dx = dy = 0
+                rotar_angulo = 0
+
+                # Movimiento con teclas de dirección
+                if keys[pg.K_LEFT]:
+                    dx = -0.005  # Puedes ajustar la velocidad de movimiento
+                if keys[pg.K_RIGHT]:
+                    dx = 0.005
+                if keys[pg.K_UP]:
+                    dy = 0.005
+                if keys[pg.K_DOWN]:
+                    dy = -0.005
+
+                # Rotación con teclas 'L' y 'R'
+                if keys[pg.K_l]:
+                    rotar_angulo = -0.1  # Ajusta el ángulo de rotación si es necesario
+                if keys[pg.K_r]:
+                    rotar_angulo = 0.1
+
+                # Mover figura y verificar colisiones
+                if dx != 0 or dy != 0:
+                    self.Figura_seleccionada.Mover_figura(dx, dy)
+                    colision = False
+                    for figura in self.Figuras:
+                        if figura != self.Figura_seleccionada:
+                            if self.Figura_seleccionada.colision_con_otro(figura):
+                                colision = True
+                                break
+                    if colision:
+                        # Revertir movimiento si hay colisión
+                        self.Figura_seleccionada.Mover_figura(-dx, -dy)
+
+                # Rotar figura y verificar colisiones
+                if rotar_angulo != 0:
+                    self.Figura_seleccionada.Rotar_figura(rotar_angulo)
+                    colision = False
+                    for figura in self.Figuras:
+                        if figura != self.Figura_seleccionada:
+                            if self.Figura_seleccionada.colision_con_otro(figura):
+                                colision = True
+                                break
+                    if colision:
+                        # Revertir rotación si hay colisión
+                        self.Figura_seleccionada.Rotar_figura(-rotar_angulo)
+
             glClear(GL_COLOR_BUFFER_BIT)
             glMatrixMode(GL_MODELVIEW)
             for figura in self.Figuras:
