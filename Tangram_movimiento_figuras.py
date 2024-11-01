@@ -126,7 +126,7 @@ class App:
         Pantalla = (800, 600)
         gluPerspective(45, (Pantalla[0] / Pantalla[1]), 0.1, 50.0)
         glTranslatef(0.0, 0.0, -2)
-        pg.display.set_caption("Tangram 2D con OpenGL movible con las teclas de dirección del teclado")
+        pg.display.set_caption("Tangram 2D con OpenGL movible con las teclas de dirección del teclado, rotación con 'L' y 'R' y con sistema de colisiones")
         self.clock = pg.time.Clock()
         glClearColor(0.0, 0.0, 0.0, 1)
         # Crear las figuras del tangram.
