@@ -6,7 +6,7 @@ import math
 
 # Ángel Adrián Martínez Bernardino
 
-# Dimensiones de la ventana y del tablero.
+# Dimensiones de la ventana Y del tablero.
 Eje_X_Programa = 424
 Eje_Y_Programa = 254
 Margen_Eje_X_Programa_Respecto_Tablero_Isometrico = 18
@@ -22,12 +22,12 @@ Posicion_cubo = [5, 5]  # Centro del tablero.
 # Ángulo para la proyección isométrica (30 grados).
 Angulo_Isometrico = math.radians(30)
 
-# Función para inicializar PyOpenGL con ajuste a la ventana y perspectiva.
+# Función para inicializar PyOpenGL con ajuste a la ventana Y perspectiva.
 def Vistas():
     glEnable(GL_DEPTH_TEST)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    # Cambiar a glOrtho y definir los planos near y far
+    # Cambiar a glOrtho Y definir los planos near Y far
     glOrtho(0, Eje_X_Programa, 0, Eje_Y_Programa, -100, 100)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()

@@ -15,15 +15,15 @@ class Figura:
         Vertices_transformados = []
         Angulo_coseno = math.cos(math.radians(self.Angulo))
         Angulo_seno = math.sin(math.radians(self.Angulo))
-        for x0, y0, z0 in self.Original_vertices:
+        for X0, Y0, Z0 in self.Original_vertices:
             # Aplicar rotación.
-            Rotacion_x = x0 * Angulo_coseno - y0 * Angulo_seno
-            Rotacion_y = x0 * Angulo_seno + y0 * Angulo_coseno
+            Rotacion_x = X0 * Angulo_coseno - Y0 * Angulo_seno
+            Rotacion_y = X0 * Angulo_seno + Y0 * Angulo_coseno
             # Aplicar traslación.
-            x = Rotacion_x + self.Posicion[0]
-            y = Rotacion_y + self.Posicion[1]
-            z = z0
-            Vertices_transformados.append((x, y, z))
+            X = Rotacion_x + self.Posicion[0]
+            Y = Rotacion_y + self.Posicion[1]
+            Z = Z0
+            Vertices_transformados.append((X, Y, Z))
         return Vertices_transformados
 
     def Dibujar(self):
@@ -36,29 +36,29 @@ class Figura:
             glVertex3f(*vertex)
         glEnd()
 
-    def Mover_figura(self, dx, dy):
-        self.Posicion = (self.Posicion[0] + dx, self.Posicion[1] + dy)
+    def Mover_figura(self, DX, DY):
+        self.Posicion = (self.Posicion[0] + DX, self.Posicion[1] + DY)
 
     def Rotar_figura(self, Incremento_angulo):
         self.Angulo += Incremento_angulo
         self.Angulo %= 360
 
     def Colision(self, x, y):
-        transformed_vertices = [(vx, vy) for vx, vy, vz in self.Obtener_vertices_trnsformados()]
-        return self.Punto_en_poligono(x, y, transformed_vertices)
+        Vertices_transformados = [(VX, VY) for VX, VY, VZ in self.Obtener_vertices_trnsformados()]
+        return self.Punto_en_poligono(x, y, Vertices_transformados)
 
-    def Punto_en_poligono(self, x, y, Poligono):
+    def Punto_en_poligono(self, X, Y, Poligono):
         Numero = len(Poligono)
-        j = Numero - 1
-        c = False
+        J = Numero - 1
+        C = False
         for i in range(Numero):
-            xi, yi = Poligono[i]
-            xj, yj = Poligono[j]
-            if ((yi > y) != (yj > y)) and \
-               (x < (xj - xi) * (y - yi) / (yj - yi + 1e-10) + xi):
-                c = not c
-            j = i
-        return c
+            XI, YI = Poligono[i]
+            XJ, YJ = Poligono[J]
+            if ((YI > Y) != (YJ > Y)) and \
+               (X < (XJ - XI) * (Y - YI) / (YJ - YI + 1e-10) + XI):
+                C = not C
+            J = i
+        return C
 
     def Colision_con_otra_figura(self, Otra_figura):
         Poligono_1 = self.Obtener_vertices_trnsformados()
@@ -73,17 +73,17 @@ class Figura:
                 if self.Segmentos_se_intersectan(P1, P2, Q1, Q2):
                     return True
         # Verificar si algún vértice de Poligono_1 está dentro de Poligono_2.
-        for x, y, z in Poligono_1:
-            if Otra_figura.Punto_en_poligono(x, y, [(vx, vy) for vx, vy, vz in Poligono_2]):
+        for X, Y, Z in Poligono_1:
+            if Otra_figura.Punto_en_poligono(X, Y, [(VX, VY) for VX, VY, VZ in Poligono_2]):
                 return True
         # Verificar si algún vértice de Poligono_2 está dentro de Poligono_1.
-        for x, y, z in Poligono_2:
-            if self.Punto_en_poligono(x, y, [(vx, vy) for vx, vy, vz in Poligono_1]):
+        for X, Y, Z in Poligono_2:
+            if self.Punto_en_poligono(X, Y, [(vx, vy) for vx, vy, vz in Poligono_1]):
                 return True
         return False
 
     def Segmentos_se_intersectan(self, P1, P2, Q1, Q2):
-        # Retorna True si los segmentos de línea P1-P2 y Q1-Q2 se intersectan.
+        # Retorna True si los segmentos de línea P1-P2 Y Q1-Q2 se intersectan.
         def Orientacion(A, B, C):
             # Retorna 0 si es colineal, 1 si es horario, 2 si es antihorario.
             Valor = (B[1] - A[1]) * (C[0] - B[0]) - (B[0] - A[0]) * (C[1] - B[1])
@@ -168,12 +168,12 @@ class App:
                     dy = 0.005  # Puedes ajustar la velocidad de movimiento.
                 if keys[pg.K_DOWN]:
                     dy = -0.005  # Puedes ajustar la velocidad de movimiento.
-                # Rotación con teclas "L" y "R".
+                # Rotación con teclas "L" Y "R".
                 if keys[pg.K_l]:
                     Rotar_angulo = -0.1  # Ajusta el ángulo de rotación si es necesario.
                 if keys[pg.K_r]:
                     Rotar_angulo = 0.1  # Ajusta el ángulo de rotación si es necesario.
-                # Mover figura y verificar colisiones.
+                # Mover figura Y verificar colisiones.
                 if dx != 0 or dy != 0:
                     self.Figura_seleccionada.Mover_figura(dx, dy)
                     Colision = False
@@ -185,7 +185,7 @@ class App:
                     if Colision:
                         # Revertir movimiento si hay colisión.
                         self.Figura_seleccionada.Mover_figura(-dx, -dy)
-                # Rotar figura y verificar colisiones.
+                # Rotar figura Y verificar colisiones.
                 if Rotar_angulo != 0:
                     self.Figura_seleccionada.Rotar_figura(Rotar_angulo)
                     Colision = False

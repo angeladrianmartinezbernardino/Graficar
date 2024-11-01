@@ -5,9 +5,9 @@ from OpenGL.GLU import *
 import numpy as np
 import time
 
-# De Ángel Adrián Martínez Bernardino y Luis Carlos Prieto Juárez.
+# De Ángel Adrián Martínez Bernardino Y Luis Carlos Prieto Juárez.
 
-# Inicializar pygame y OpenGL.
+# Inicializar pygame Y OpenGL.
 pygame.init()
 display = (300, 300)
 pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
@@ -78,11 +78,11 @@ def main():
                 Fila = y // 100
                 if Tablero[int(Fila)][int(Columna)] == 0:
                     Tablero[int(Fila)][int(Columna)] = Jugador_actual
-                    Jugador_actual = 3 - Jugador_actual  # Alterna entre 1 y 2.
+                    Jugador_actual = 3 - Jugador_actual  # Alterna entre 1 Y 2.
                     # Limpiar pantalla.
                     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
                     glClearColor(1, 1, 1, 1)  # Fondo blanco.
-                    # Dibujar la cuadrícula y los movimientos.
+                    # Dibujar la cuadrícula Y los movimientos.
                     dibujar_cuadricula()
                     dibujar_movimientos()
                     pygame.display.flip()
@@ -103,14 +103,14 @@ def main():
         # Limpiar pantalla.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glClearColor(1, 1, 1, 1)  # Fondo blanco.
-        # Dibujar la cuadrícula y los movimientos.
+        # Dibujar la cuadrícula Y los movimientos.
         dibujar_cuadricula()
         dibujar_movimientos()
         pygame.display.flip()
         pygame.time.wait(10)
 
 def verificar_ganador():
-    # Verifica filas, columnas y diagonales para encontrar un ganador.
+    # Verifica filas, columnas Y diagonales para encontrar un ganador.
     for i in range(3):
         if Tablero[i][0] == Tablero[i][1] == Tablero[i][2] != 0:
             return Tablero[i][0]

@@ -4,9 +4,9 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import numpy as np
 
-# De Ángel Adrián Martínez Bernardino y Luis Carlos Prieto Juárez.
+# De Ángel Adrián Martínez Bernardino Y Luis Carlos Prieto Juárez.
 
-# Inicializa pygame y crea una ventana.
+# Inicializa pygame Y crea una ventana.
 pygame.init()
 Pantalla = (800, 600)
 pygame.display.set_mode(Pantalla, DOUBLEBUF | OPENGL)
@@ -17,15 +17,15 @@ gluPerspective(45, (Pantalla[0] / Pantalla[1]), 0.1, 50.0)
 glTranslatef(0.0, 0.0, -5)
 
 
-# Función para dibujar los ejes x e y.
+# Función para dibujar los ejes X e Y.
 def Dibujar_ejes():
     glLineWidth(2.0)  # Hace los ejes un poco más gruesos.
     glBegin(GL_LINES)
-    # Eje x.
+    # Eje X.
     glColor3f(0.0, 0.0, 0.0)  # Negro.
     glVertex3fv((-5, 0, 0))
     glVertex3fv((5, 0, 0))
-    # Eje y.
+    # Eje Y.
     glVertex3fv((0, -5, 0))
     glVertex3fv((0, 5, 0))
     glEnd()
@@ -37,7 +37,7 @@ def Dibujar_onda_sinusoidal():
     glLineWidth(2.0)  # Ajusta el grosor de la línea de la función seno.
     glBegin(GL_LINE_STRIP)
     for x in np.arange(-5, 5, 0.1):
-        y = np.sin(x * np.pi)  # Multiplica x por pi para incrementar la frecuencia.
+        y = np.sin(x * np.pi)  # Multiplica X por pi para incrementar la frecuencia.
         glVertex3f(x, y, 0)
     glEnd()
 
@@ -48,10 +48,10 @@ while True:
         if Evento.type == pygame.QUIT:
             pygame.quit()
             quit()
-    # Limpia la pantalla y establece el fondo en blanco.
+    # Limpia la pantalla Y establece el fondo en blanco.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glClearColor(1, 1, 1, 1)
-    # Dibuja los ejes y la función seno.
+    # Dibuja los ejes Y la función seno.
     Dibujar_ejes()
     Dibujar_onda_sinusoidal()
     # Actualiza la pantalla.

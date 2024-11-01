@@ -4,7 +4,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import math
 
-# Dimensiones de la ventana y del tablero.
+# Dimensiones de la ventana Y del tablero.
 Ancho, Altura = 424, 254
 Margen_X = 18
 Margen_Y = 15
@@ -16,7 +16,7 @@ Tablero_Alto = 10
 # Ángulo para la proyección isométrica (30 grados).
 Angulo_isometrico = math.radians(30)
 
-# Función para inicializar PyOpenGL con ajuste a la ventana y perspectiva.
+# Función para inicializar PyOpenGL con ajuste a la ventana Y perspectiva.
 def Vistas():
     glEnable(GL_DEPTH_TEST)
     glMatrixMode(GL_PROJECTION)
@@ -34,13 +34,13 @@ def Isometrico(x, y):
     Y_final = Y_isometrico + Margen_Y
     return X_final, Y_final
 
-# Función para dibujar el tablero (con líneas negras y casillas de fondo azul claro).
+# Función para dibujar el tablero (con líneas negras Y casillas de fondo azul claro).
 def Dibujar_grid():
     for i in range(Tablero_Ancho):
         for j in range(Tablero_Alto):
             Dibujar_casilla(i, j)
 
-# Función para dibujar una casilla en una posición (x, y) en la vista isométrica.
+# Función para dibujar una casilla en una posición (X, Y) en la vista isométrica.
 def Dibujar_casilla(x, y):
     X_isometrico, Y_isometrico = Isometrico(x, y)
     half_width = Tamaño_Casilla_Ancho / 2
@@ -62,14 +62,14 @@ def Dibujar_casilla(x, y):
     glVertex3f(X_isometrico - half_width, Y_isometrico + half_height, 0.0)
     glEnd()
 
-# Datos de los barcos, incluyendo longitud y orientación.
+# Datos de los barcos, incluyendo longitud Y orientación.
 barcos = [
     {"longitud": 3, "coordenadas": (9, 7), "orientacion": "vertical"},  # Barco 1 en (J, 8).
     {"longitud": 3, "coordenadas": (1, 3), "orientacion": "vertical"},  # Barco 2 en (B, 4).
     {"longitud": 4, "coordenadas": (5, 4), "orientacion": "vertical"}   # Barco 3 en (F, 5).
 ]
 
-# Función para dibujar un barco en una posición (x, y) con orientación.
+# Función para dibujar un barco en una posición (X, Y) con orientación.
 def Dibujar_barco(barco):
     x, y = barco["coordenadas"]
     longitud = barco["longitud"]
