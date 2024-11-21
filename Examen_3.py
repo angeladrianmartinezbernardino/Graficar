@@ -1,82 +1,87 @@
+import glfw
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OpenGL.GLUT import *
-
-# Variables para la posición y color
-angle = 0.0
-
 
 def init():
-    glEnable(GL_DEPTH_TEST)  # Habilitar el test de profundidad
-    glEnable(GL_LIGHTING)  # Habilitar iluminación
-    glEnable(GL_LIGHT0)  # Habilitar la fuente de luz 0
-    glEnable(GL_COLOR_MATERIAL)  # Habilitar material por color
-    glShadeModel(GL_SMOOTH)  # Suavizar el sombreado
-
-    # Configurar la luz
-    light_position = [1.0, 1.0, 1.0, 1.0]
-    light_diffuse = [1.0, 0.5, 0.5, 1.0]
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position)
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse)
-
-
-def draw_sphere():
-    # Dibujar una esfera roja
-    glPushMatrix()
-    glColor3f(1.0, 0.0, 0.0)  # Color rojo
-    glutSolidSphere(0.5, 50, 50)
-    glPopMatrix()
-
-
-def draw_cube():
-    # Dibujar un cubo como base
-    glPushMatrix()
-    glColor3f(0.5, 0.5, 0.5)  # Color gris
-    glScalef(1.5, 0.5, 1.0)
-    glutSolidCube(1.0)
-    glPopMatrix()
-
+    """Configuración inicial de OpenGL."""
+    glEnable(GL_DEPTH_TEST)
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glEnable(GL_COLOR_MATERIAL)
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+    glShadeModel(GL_SMOOTH)
 
 def display():
-    global angle
+    """Función de renderizado."""
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
 
-    # Configurar la cámara
-    gluLookAt(0.0, 1.5, 3.0,  # Posición de la cámara
-              0.0, 0.0, 0.0,  # Punto de enfoque
-              0.0, 1.0, 0.0)  # Vector hacia arriba
+    # Configuración de la cámara
+    gluLookAt(0.0, 1.0, 5.0,    # Posición del ojo
+              0.0, 0.0, 0.0,    # Punto de referencia
+              0.0, 1.0, 0.0)    # Vector "up"
 
-    # Rotación animada de la escena
-    glRotatef(angle, 0.0, 1.0, 0.0)
+    # Configuración de la fuente de luz
+    light_pos = [1.0, 1.0, 1.0, 0.0]
+    glLightfv(GL_LIGHT0, GL_POSITION, light_pos)
 
-    # Dibujar las figuras
-    draw_cube()
-    glTranslatef(0.0, 0.75, 0.0)
-    draw_sphere()
+    # Dibujar una esfera roja usando gluSphere
+    glPushMatrix()
+    glColor3f(1.0, 0.0, 0.0)
+    glTranslatef(0.0, 0.5, 0.0)
+    quadric = gluNewQuadric()
+    gluSphere(quadric, 0.5, 50, 50)
+    gluDeleteQuadric(quadric)  # Liberar recursos
+    glPopMatrix()
 
-    glutSwapBuffers()
+    # Dibujar una base (rectángulo) en gris
+    glPushMatrix()
+    glColor3f(0.5, 0.5, 0.5)
+    glBegin(GL_QUADS)
+    glVertex3f(-1.0, -0.5, -1.0)
+    glVertex3f(1.0, -0.5, -1.0)
+    glVertex3f(1.0, -0.5, 1.0)
+    glVertex3f(-1.0, -0.5, 1.0)
+    glEnd()
+    glPopMatrix()
 
+    glfw.swap_buffers(window)
 
-def update(value):
-    global angle
-    angle += 1.0
-    if angle > 360:
-        angle -= 360
-    glutPostRedisplay()
-    glutTimerFunc(16, update, 0)
-
+def reshape(window, width, height):
+    """Ajuste del viewport y proyección cuando se cambia el tamaño de la ventana."""
+    glViewport(0, 0, width, height)
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluPerspective(45.0, width / float(height or 1), 0.1, 100.0)
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
 
 def main():
-    glutInit()
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
-    glutInitWindowSize(800, 600)
-    glutCreateWindow(b"Illuminated Sphere")
-    init()
-    glutDisplayFunc(display)
-    glutTimerFunc(16, update, 0)
-    glutMainLoop()
+    """Configuración del entorno GLFW y ciclo principal."""
+    global window
 
+    if not glfw.init():
+        return
+
+    window = glfw.create_window(800, 600, "Figura con Iluminación", None, None)
+
+    if not window:
+        glfw.terminate()
+        return
+
+    glfw.make_context_current(window)
+    glfw.set_window_size_callback(window, reshape)
+    init()
+
+    # Configuración inicial del viewport y proyección
+    width, height = glfw.get_framebuffer_size(window)
+    reshape(window, width, height)
+
+    while not glfw.window_should_close(window):
+        display()
+        glfw.poll_events()
+
+    glfw.terminate()
 
 if __name__ == "__main__":
     main()
