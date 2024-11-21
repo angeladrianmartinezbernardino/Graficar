@@ -2,6 +2,10 @@ import glfw
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+# Variables globales para el movimiento de la esfera
+sphere_y = 0.5  # Altura inicial de la esfera
+move_speed = 0.05  # Velocidad de movimiento
+
 def init():
     """Configuración inicial de OpenGL."""
     glEnable(GL_DEPTH_TEST)
@@ -13,6 +17,8 @@ def init():
 
 def display():
     """Función de renderizado."""
+    global sphere_y
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
 
@@ -28,7 +34,7 @@ def display():
     # Dibujar una esfera roja usando gluSphere
     glPushMatrix()
     glColor3f(1.0, 0.0, 0.0)
-    glTranslatef(0.0, 0.5, 0.0)
+    glTranslatef(0.0, sphere_y, 0.0)  # Actualiza la posición de la esfera
     quadric = gluNewQuadric()
     gluSphere(quadric, 0.5, 50, 50)
     gluDeleteQuadric(quadric)  # Liberar recursos
@@ -56,6 +62,16 @@ def reshape(window, width, height):
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
+def key_callback(window, key, scancode, action, mods):
+    """Callback para manejar los eventos de teclado."""
+    global sphere_y, move_speed
+
+    if action == glfw.PRESS or action == glfw.REPEAT:
+        if key == glfw.KEY_UP:
+            sphere_y += move_speed  # Mover la esfera hacia arriba
+        elif key == glfw.KEY_DOWN:
+            sphere_y -= move_speed  # Mover la esfera hacia abajo
+
 def main():
     """Configuración del entorno GLFW y ciclo principal."""
     global window
@@ -71,6 +87,7 @@ def main():
 
     glfw.make_context_current(window)
     glfw.set_window_size_callback(window, reshape)
+    glfw.set_key_callback(window, key_callback)  # Vincular el callback de teclado
     init()
 
     # Configuración inicial del viewport y proyección
