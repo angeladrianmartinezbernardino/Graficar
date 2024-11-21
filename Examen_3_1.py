@@ -41,19 +41,19 @@ def display():
     glLoadIdentity()
 
     # Configuración de la cámara
-    gluLookAt(0.0, 0.0, 5.0,  # Posición de la cámara
+    gluLookAt(0.0, 1.0, 5.0,  # Posición de la cámara
               0.0, 0.0, 0.0,  # Punto al que mira
               0.0, 1.0, 0.0)  # Vector "up"
 
     # Dibujar el suelo
     glPushMatrix()
     glDisable(GL_LIGHTING)
-    glColor3f(0.0, 0.0, 0.0)  # Color negro para el suelo
+    glColor3f(0.1, 0.1, 0.1)  # Color negro con un leve reflejo
     glBegin(GL_QUADS)
-    glVertex3f(-2.0, 0.0, -2.0)
-    glVertex3f(2.0, 0.0, -2.0)
-    glVertex3f(2.0, 0.0, 2.0)
-    glVertex3f(-2.0, 0.0, 2.0)
+    glVertex3f(-1.0, 0.0, -1.0)  # Aumentar el tamaño del suelo
+    glVertex3f(1.0, 0.0, -1.0)
+    glVertex3f(1.0, 0.0, 1.0)
+    glVertex3f(-1.0, 0.0, 1.0)
     glEnd()
     glEnable(GL_LIGHTING)
     glPopMatrix()
