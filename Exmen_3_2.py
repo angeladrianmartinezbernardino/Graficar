@@ -4,66 +4,85 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-# Inicialización de Pygame y OpenGL
+# Inicialización de Pygame y OpenGL.
 pygame.init()
-display = (800, 600)
-pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
-glOrtho(0, 800, 600, 0, -1, 1)
+pantalla = (800, 600)
+pygame.display.set_mode(pantalla, DOUBLEBUF | OPENGL)
+glOrtho(0, 800, 0, 600, -1, 1)
 
-# Cargar las texturas del sprite
-sprite_frames = ["frame1.png", "frame2.png", "frame3.png", "frame4.png"]  # Añadir más si tienes más frames
-textures = []
+# Establecer el color de fondo a blanco.
+glClearColor(1.0, 1.0, 1.0, 1.0)
 
-for frame in sprite_frames:
-    surface = pygame.image.load(frame).convert_alpha()
-    texture_data = pygame.image.tostring(surface, "RGBA", True)
-    width, height = surface.get_size()
+# Cargar las texturas del sprite.
+fotogramas_sprite = [
+    "Shepherd_default.png",
+    "Shepherd_walk_1.png",
+    "Shepherd_walk_2.png",
+    "Shepherd_walk_3.png",
+    "Shepherd_walk_4.png",
+    "Shepherd_walk_5.png",
+    "Shepherd_walk_6.png",
+    "Shepherd_bark_1.png",
+    "Shepherd_bark_2.png",
+    "Shepherd_bark_3.png",
+    "Shepherd_run_1.png",
+    "Shepherd_run_2.png",
+    "Shepherd_run_3.png",
+    "Shepherd_run_4.png",
+    "Shepherd_run_5.png"
+]  # Añadir más si tienes más fotogramas.
+texturas = []
 
-    texture_id = glGenTextures(1)
-    glBindTexture(GL_TEXTURE_2D, texture_id)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
+for fotograma in fotogramas_sprite:
+    superficie = pygame.image.load(fotograma).convert_alpha()
+    datos_textura = pygame.image.tostring(superficie, "RGBA", False)
+    ancho, alto = superficie.get_size()
+
+    id_textura = glGenTextures(1)
+    glBindTexture(GL_TEXTURE_2D, id_textura)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ancho, alto, 0, GL_RGBA, GL_UNSIGNED_BYTE, datos_textura)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 
-    textures.append((texture_id, width, height))
+    texturas.append((id_textura, ancho, alto))
 
-# Función para renderizar un frame
-def render_frame(texture, width, height, x, y):
+# Función para renderizar un fotograma.
+def renderizar_fotograma(textura, ancho, alto, x, y):
     glEnable(GL_TEXTURE_2D)
-    glBindTexture(GL_TEXTURE_2D, texture)
+    glBindTexture(GL_TEXTURE_2D, textura)
     glBegin(GL_QUADS)
-    glTexCoord2f(0, 0)
-    glVertex2f(x, y)
-    glTexCoord2f(1, 0)
-    glVertex2f(x + width, y)
-    glTexCoord2f(1, 1)
-    glVertex2f(x + width, y + height)
     glTexCoord2f(0, 1)
-    glVertex2f(x, y + height)
+    glVertex2f(x, y)
+    glTexCoord2f(1, 1)
+    glVertex2f(x + ancho, y)
+    glTexCoord2f(1, 0)
+    glVertex2f(x + ancho, y + alto)
+    glTexCoord2f(0, 0)
+    glVertex2f(x, y + alto)
     glEnd()
     glDisable(GL_TEXTURE_2D)
 
-# Ciclo principal
-clock = pygame.time.Clock()
-frame_index = 0
-x, y = 300, 200  # Posición del sprite
+# Ciclo principal.
+reloj = pygame.time.Clock()
+indice_fotograma = 0
+x, y = 300, 200  # Posición del sprite.
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+ejecutando = True
+while ejecutando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            ejecutando = False
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-    # Dibujar el frame actual
-    texture, width, height = textures[frame_index]
-    render_frame(texture, width, height, x, y)
+    # Dibujar el fotograma actual.
+    textura, ancho, alto = texturas[indice_fotograma]
+    renderizar_fotograma(textura, ancho, alto, x, y)
 
-    # Avanzar al siguiente frame
-    frame_index = (frame_index + 1) % len(textures)
+    # Avanzar al siguiente fotograma.
+    indice_fotograma = (indice_fotograma + 1) % len(texturas)
 
     pygame.display.flip()
-    clock.tick(10)  # Cambia la velocidad de la animación ajustando los FPS
+    reloj.tick(10)  # Cambia la velocidad de la animación ajustando los FPS.
 
 pygame.quit()
