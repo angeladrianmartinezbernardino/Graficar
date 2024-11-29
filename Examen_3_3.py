@@ -40,7 +40,7 @@ def get_accessor_data(gltf, accessor_idx):
 
 def translate_matrix(translation):
     T = np.identity(4, dtype=np.float32)
-    T[3, :3] = translation
+    T[:3, 3] = translation  # Corrected translation placement
     return T
 
 def scale_matrix(scale):
@@ -71,20 +71,36 @@ def quaternion_to_matrix(q):
     M[2, 2] = 1.0 - (xx + yy)
     return M
 
+def quaternion_from_euler(x, y, z):
+    # Convert Euler angles (in radians) to quaternion.
+    cy = math.cos(z * 0.5)
+    sy = math.sin(z * 0.5)
+    cp = math.cos(y * 0.5)
+    sp = math.sin(y * 0.5)
+    cr = math.cos(x * 0.5)
+    sr = math.sin(x * 0.5)
+
+    qw = cr * cp * cy + sr * sp * sy
+    qx = sr * cp * cy - cr * sp * sy
+    qy = cr * sp * cy + sr * cp * sy
+    qz = cr * cp * sy - sr * sp * cy
+
+    return [qx, qy, qz, qw]
+
 def draw_mesh(gltf, mesh_idx):
     mesh = gltf.meshes[mesh_idx]
     for primitive in mesh.primitives:
-        # Obtener datos de vértices.
+        # Get vertex data.
         position_accessor_idx = primitive.attributes.POSITION
         positions = get_accessor_data(gltf, position_accessor_idx).astype(np.float32)
 
-        # Obtener índices.
+        # Get indices.
         if primitive.indices is not None:
             indices = get_accessor_data(gltf, primitive.indices).flatten().astype(np.uint32)
         else:
             indices = np.arange(len(positions), dtype=np.uint32)
 
-        # Crear buffers
+        # Create buffers
         VBO = glGenBuffers(1)
         EBO = glGenBuffers(1)
 
@@ -109,48 +125,32 @@ def draw_mesh(gltf, mesh_idx):
 def render_node(gltf, node_idx, parent_matrix=np.identity(4, dtype=np.float32)):
     node = gltf.nodes[node_idx]
 
-    # Obtener la matriz de transformación del nodo.
+    # Get the node's transformation matrix.
     T = np.identity(4, dtype=np.float32)
-    if node.matrix:
+    if node.matrix is not None and any(node.matrix):
         T = np.array(node.matrix, dtype=np.float32).reshape(4, 4).T
     else:
-        if node.translation:
+        if node.translation is not None and any(node.translation):
             T = np.dot(T, translate_matrix(node.translation))
-        if node.rotation:
+        if node.rotation is not None and any(node.rotation):
             T = np.dot(T, quaternion_to_matrix(node.rotation))
-        if node.scale:
+        if node.scale is not None and any(node.scale):
             T = np.dot(T, scale_matrix(node.scale))
 
-    # Combinar con la matriz del padre.
+    # Combine with the parent's transformation matrix.
     T = np.dot(parent_matrix, T)
 
-    # Si el nodo tiene una malla, dibujarla.
+    # If the node has a mesh, draw it.
     if node.mesh is not None:
         glPushMatrix()
-        glMultMatrixf(T)
+        glMultMatrixf(T.T)  # Transpose the matrix for OpenGL's column-major order
         draw_mesh(gltf, node.mesh)
         glPopMatrix()
 
-    # Renderizar los hijos.
+    # Render the child nodes.
     if node.children:
         for child_idx in node.children:
             render_node(gltf, child_idx, T)
-
-def quaternion_from_euler(x, y, z):
-    # Convertir ángulos de Euler a cuaterniones.
-    cy = math.cos(z * 0.5)
-    sy = math.sin(z * 0.5)
-    cp = math.cos(y * 0.5)
-    sp = math.sin(y * 0.5)
-    cr = math.cos(x * 0.5)
-    sr = math.sin(x * 0.5)
-
-    w = cr * cp * cy + sr * sp * sy
-    x = sr * cp * cy - cr * sp * sy
-    y = cr * sp * cy + sr * cp * sy
-    z = cr * cp * sy - sr * sp * cy
-
-    return [x, y, z, w]
 
 def main():
     pygame.init()
@@ -160,25 +160,34 @@ def main():
 
     glEnable(GL_DEPTH_TEST)
 
-    # Cargar el modelo GLB.
+    # Load the GLB model.
     gltf = GLTF2().load('Robot.glb')
 
-    # Proyección.
+    # Print node information to identify correct node indices.
+    for idx, node in enumerate(gltf.nodes):
+        print(f"Node {idx}: Name='{node.name}', Children={node.children}, Mesh={node.mesh}")
+
+    # Projection.
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
 
-    # Variables para animación.
-    running_angle = 0
-    direction = 1
-    max_angle = 0.5  # Rango de movimiento en radianes.
+    # Animation variables.
+    max_angle = 0.5  # Movement range in radians.
 
-    # Obtener los índices de los nodos correspondientes a los brazos y piernas.
-    # Supongamos que ya conoces los índices de los nodos de las extremidades.
-    left_arm_node_idx = 5    # Reemplaza con el índice correcto.
-    right_arm_node_idx = 6   # Reemplaza con el índice correcto.
-    left_leg_node_idx = 7    # Reemplaza con el índice correcto.
-    right_leg_node_idx = 8   # Reemplaza con el índice correcto.
+    # Get the indices of the nodes corresponding to the arms and legs.
+    # Use the node indices from the printed information.
+    left_arm_node_idx = 10   # 'Left_ShoulderJoint'
+    right_arm_node_idx = 6   # 'Right_ShoulderJoint'
+    left_leg_node_idx = 17   # 'Left_Hip'
+    right_leg_node_idx = 21  # 'Right_Hip'
+
+    # Ensure the nodes have rotation initialized.
+    nodes_to_animate = [left_arm_node_idx, right_arm_node_idx, left_leg_node_idx, right_leg_node_idx]
+    for node_idx in nodes_to_animate:
+        node = gltf.nodes[node_idx]
+        if node.rotation is None or len(node.rotation) == 0:
+            node.rotation = [0, 0, 0, 1]
 
     while True:
         for event in pygame.event.get():
@@ -186,28 +195,29 @@ def main():
                 pygame.quit()
                 quit()
 
-        # Limpiar pantalla.
+        # Clear the screen.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        # Configurar cámara.
+        # Set up the camera.
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         gluLookAt(0, 1, 10, 0, 0, 0, 0, 1, 0)
 
-        # Aplicar animación.
-        angle = math.sin(pygame.time.get_ticks() * 0.005) * max_angle
+        # Apply animation.
+        time = pygame.time.get_ticks() * 0.001
+        angle = math.sin(time) * max_angle
 
-        # Animar brazos.
+        # Animate arms.
         arm_rotation = quaternion_from_euler(angle, 0, 0)
         gltf.nodes[left_arm_node_idx].rotation = arm_rotation
         gltf.nodes[right_arm_node_idx].rotation = arm_rotation
 
-        # Animar piernas.
+        # Animate legs.
         leg_rotation = quaternion_from_euler(-angle, 0, 0)
         gltf.nodes[left_leg_node_idx].rotation = leg_rotation
         gltf.nodes[right_leg_node_idx].rotation = leg_rotation
 
-        # Dibujar modelo.
+        # Draw the model.
         scene = gltf.scenes[gltf.scene]
         for node_idx in scene.nodes:
             render_node(gltf, node_idx)
