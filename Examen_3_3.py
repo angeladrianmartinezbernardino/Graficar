@@ -46,17 +46,17 @@ def main():
 
     glEnable(GL_DEPTH_TEST)
 
-    # Cargar el modelo GLB
-    gltf = GLTF2().load('Robo Character Creation Project.glb')
+    # Cargar el modelo GLB.
+    gltf = GLTF2().load('Robot.glb')
 
     mesh = gltf.meshes[0]
     primitive = mesh.primitives[0]
 
-    # Obtener datos de vértices
+    # Obtener datos de vértices.
     position_accessor_idx = primitive.attributes.POSITION
     positions = get_accessor_data(gltf, position_accessor_idx).astype(np.float32)
 
-    # Obtener índices
+    # Obtener índices.
     if primitive.indices is not None:
         indices = get_accessor_data(gltf, primitive.indices).flatten().astype(np.uint32)
     else:
@@ -75,12 +75,12 @@ def main():
     glEnableClientState(GL_VERTEX_ARRAY)
     glVertexPointer(3, GL_FLOAT, 0, None)
 
-    # Proyección
+    # Proyección.
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
 
-    # Variables para animación
+    # Variables para animación.
     running_angle = 0
     direction = 1
 
@@ -90,23 +90,23 @@ def main():
                 pygame.quit()
                 quit()
 
-        # Limpiar pantalla
+        # Limpiar pantalla.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        # Configurar cámara
+        # Configurar cámara.
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         gluLookAt(0, 1, 10, 0, 0, 0, 0, 1, 0)
 
-        # Aplicar animación
+        # Aplicar animación.
         glPushMatrix()
         glTranslatef(0, 0, 0)
-        glRotatef(running_angle, 0, 1, 0)  # Rotar para simular movimiento
-        running_angle += direction * 5  # Velocidad de animación
+        glRotatef(running_angle, 0, 1, 0)  # Rotar para simular movimiento.
+        running_angle += direction * 5  # Velocidad de animación.
         if running_angle > 20 or running_angle < -20:
-            direction *= -1  # Cambiar dirección
+            direction *= -1  # Cambiar dirección.
 
-        # Dibujar modelo
+        # Dibujar modelo.
         glBindBuffer(GL_ARRAY_BUFFER, VBO)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO)
         glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, None)
