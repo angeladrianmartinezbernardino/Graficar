@@ -11,17 +11,17 @@ def get_accessor_data(gltf, accessor_idx):
     buffer = gltf.buffers[buffer_view.buffer]
     buffer_data = gltf.binary_blob()
 
-    # Calcular desplazamientos y tamaños
     accessor_byte_offset = accessor.byteOffset or 0
     buffer_view_byte_offset = buffer_view.byteOffset or 0
     total_offset = buffer_view_byte_offset + accessor_byte_offset
+
     data_type = {
-        5120: np.byte,        # BYTE
-        5121: np.ubyte,       # UNSIGNED_BYTE
-        5122: np.short,       # SHORT
-        5123: np.ushort,      # UNSIGNED_SHORT
-        5125: np.uint32,      # UNSIGNED_INT
-        5126: np.float32      # FLOAT
+        5120: np.byte,
+        5121: np.ubyte,
+        5122: np.short,
+        5123: np.ushort,
+        5125: np.uint32,
+        5126: np.float32
     }[accessor.componentType]
 
     type_count = {
@@ -39,7 +39,6 @@ def get_accessor_data(gltf, accessor_idx):
     return data.reshape((accessor.count, type_count))
 
 def main():
-    # Inicializar Pygame y OpenGL
     pygame.init()
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
@@ -47,10 +46,9 @@ def main():
 
     glEnable(GL_DEPTH_TEST)
 
-    # Cargar el archivo GLB
-    gltf = GLTF2().load('Robo Character Creation Project.glb')  # Reemplaza 'modelo.glb' con tu archivo
+    # Cargar el modelo GLB
+    gltf = GLTF2().load('Robo Character Creation Project.glb')
 
-    # Asumimos que el modelo tiene una sola malla y un solo primitivo
     mesh = gltf.meshes[0]
     primitive = mesh.primitives[0]
 
@@ -58,13 +56,13 @@ def main():
     position_accessor_idx = primitive.attributes.POSITION
     positions = get_accessor_data(gltf, position_accessor_idx).astype(np.float32)
 
-    # Obtener datos de índices (si existen)
+    # Obtener índices
     if primitive.indices is not None:
         indices = get_accessor_data(gltf, primitive.indices).flatten().astype(np.uint32)
     else:
         indices = np.arange(len(positions), dtype=np.uint32)
 
-    # Crear buffers de OpenGL
+    # Crear buffers
     VBO = glGenBuffers(1)
     EBO = glGenBuffers(1)
 
@@ -74,16 +72,18 @@ def main():
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.nbytes, indices, GL_STATIC_DRAW)
 
-    # Configurar punteros de vértices
     glEnableClientState(GL_VERTEX_ARRAY)
     glVertexPointer(3, GL_FLOAT, 0, None)
 
-    # Configurar la proyección
+    # Proyección
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
 
-    # Bucle principal
+    # Variables para animación
+    running_angle = 0
+    direction = 1
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -93,21 +93,27 @@ def main():
         # Limpiar pantalla
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        # Configurar vista
+        # Configurar cámara
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0)
+        gluLookAt(0, 1, 10, 0, 0, 0, 0, 1, 0)
 
-        # Rotar el modelo para visualizarlo mejor
-        glRotatef(pygame.time.get_ticks() * 0.05, 0, 1, 0)
+        # Aplicar animación
+        glPushMatrix()
+        glTranslatef(0, 0, 0)
+        glRotatef(running_angle, 0, 1, 0)  # Rotar para simular movimiento
+        running_angle += direction * 5  # Velocidad de animación
+        if running_angle > 20 or running_angle < -20:
+            direction *= -1  # Cambiar dirección
 
-        # Dibujar el modelo
+        # Dibujar modelo
         glBindBuffer(GL_ARRAY_BUFFER, VBO)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO)
         glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, None)
+        glPopMatrix()
 
         pygame.display.flip()
         clock.tick(60)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
