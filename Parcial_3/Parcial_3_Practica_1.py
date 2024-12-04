@@ -15,7 +15,7 @@ def display():
     glLoadIdentity()
     glTranslatef(-2.0, 2.0, -10.0)  # Trasladar la escena.
 
-    # Organizar las figuras en una cuadrícula de 3x3
+    # Organizar las figuras en una cuadrícula de 3x3.
     for i in range(3):
         for j in range(3):
             glPushMatrix()
