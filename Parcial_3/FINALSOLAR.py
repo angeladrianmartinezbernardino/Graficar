@@ -416,7 +416,7 @@ def main():
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(2500, 1000)  # Tamaño de la ventana
+    glutInitWindowSize(2500, 1000)  # Tamaño de la ventana.
     glutCreateWindow(b"Sistema Solar")
     
     glEnable(GL_DEPTH_TEST)
@@ -436,7 +436,7 @@ def main():
     Neptuno_texture = loadTexture("../Imagenes/Sistema_Solar/Neptuno.jpeg")
     Luna_texture = loadTexture("../Imagenes/Sistema_Solar/Luna.jpeg")
     As_texture = loadTexture("../Imagenes/Sistema_Solar/Asteoride.jpg")
-    background_texture = loadTexture("../Imagenes/Sistema_Solar/Espacio.jpg")  # Reemplaza con la ruta de tu imagen de fondo
+    background_texture = loadTexture("../Imagenes/Sistema_Solar/Espacio.jpg")  # Reemplaza con la ruta de tu imagen de fondo.
     Fobos = loadTexture("../Imagenes/Sistema_Solar/LunaFobos.jpg")
     Deimos = loadTexture("../Imagenes/Sistema_Solar/LunaDeimos.jpg")
     Io = loadTexture("../Imagenes/Sistema_Solar/Io.jpg")
