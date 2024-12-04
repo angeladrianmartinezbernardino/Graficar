@@ -385,7 +385,7 @@ def renderScene():
     glLoadIdentity()
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    gluLookAt(0.0, zoom, 200.0, 0.0, 0.0, -50.0, 0.0, 1.0, 0.0)
+    gluLookAt(0.0, zoom + 200.0, 600.0, 0.0, 0.0, -50.0, 0.0, 1.0, 0.0)
 
     drawOrbits()
     drawBackgroundSphere(700.0, 50, 50)  # Radio grande para cubrir el sistema solar.
