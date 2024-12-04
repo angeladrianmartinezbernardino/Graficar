@@ -14,6 +14,7 @@ def crear_tablero():
             tablero.append((x, 0, z))
     return tablero
 
+
 # Dibujar una celda.
 def dibujar_celda(pos, color):
     x, y, z = pos
@@ -25,6 +26,7 @@ def dibujar_celda(pos, color):
     glVertex3f(x, y, z + TAM_CELDA)
     glEnd()
 
+
 # Dibujar una ficha.
 def dibujar_ficha(pos, color):
     x, y, z = pos
@@ -34,15 +36,18 @@ def dibujar_ficha(pos, color):
     gluSphere(gluNewQuadric(), 0.3, 32, 32)
     glPopMatrix()
 
+
 # Inicializar las fichas.
 fichas = [
     {'pos': (0, 0, 0), 'color': (1, 1, 1)},  # Ficha blanca.
     {'pos': (2, 0, 2), 'color': (0, 0, 0)},  # Ficha negra.
 ]
 
+
 # Mover una ficha.
 def mover_ficha(ficha, nueva_pos):
     ficha['pos'] = nueva_pos
+
 
 # Verificar si una ficha se "come" otra.
 def verificar_comer(fichas):
@@ -54,13 +59,20 @@ def verificar_comer(fichas):
                 fichas.remove(blanca)
                 print("¡La ficha negra se comió una ficha blanca!")
 
+
 # Configuración inicial de OpenGL.
 def main():
     pygame.init()
     display = (800, 600)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
-    glTranslatef(-1.5, -2, -8)
+
+    # Configuración de la cámara para centrar el tablero y elevar la perspectiva.
+    gluLookAt(
+        1.5, 4, 6,  # Posición de la cámara (elevación y distancia ajustadas).
+        1.5, 0, 1.5,  # Punto al que mira la cámara (centro del tablero).
+        0, 1, 0  # Vector 'up' para la orientación de la cámara.
+    )
 
     tablero = crear_tablero()
     seleccionada = fichas[1]  # Ficha negra seleccionada.
@@ -102,6 +114,7 @@ def main():
 
         pygame.display.flip()
         pygame.time.wait(100)
+
 
 if __name__ == "__main__":
     main()
