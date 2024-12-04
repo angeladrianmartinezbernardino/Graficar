@@ -36,18 +36,15 @@ def dibujar_ficha(pos, color):
     gluSphere(gluNewQuadric(), 0.3, 32, 32)
     glPopMatrix()
 
-
 # Inicializar las fichas.
 fichas = [
     {'pos': (0, 0, 0), 'color': (1, 1, 1)},  # Ficha blanca.
     {'pos': (2, 0, 2), 'color': (0, 0, 0)},  # Ficha negra.
 ]
 
-
 # Mover una ficha.
 def mover_ficha(ficha, nueva_pos):
     ficha['pos'] = nueva_pos
-
 
 # Verificar si una ficha se "come" otra.
 def verificar_comer(fichas):
@@ -58,7 +55,6 @@ def verificar_comer(fichas):
             if negra['pos'] == blanca['pos']:
                 fichas.remove(blanca)
                 print("¡La ficha negra se comió una ficha blanca!")
-
 
 # Configuración inicial de OpenGL.
 def main():
@@ -114,7 +110,6 @@ def main():
 
         pygame.display.flip()
         pygame.time.wait(100)
-
 
 if __name__ == "__main__":
     main()
