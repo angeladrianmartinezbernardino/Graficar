@@ -46,7 +46,7 @@ def set_projection(w, h):
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     aspect_ratio = w / h
-    gluPerspective(45, aspect_ratio, 1, 1000)
+    gluPerspective(45, aspect_ratio, 1, 2000)  # Incrementamos el límite de visión.
     glMatrixMode(GL_MODELVIEW)
 
 def drawOrbits():
@@ -302,73 +302,73 @@ def drawPlanets():
     drawTexturedSphere(Iapetus, 3.0, 20, 20)  # Tamaño de la Luna.
     glPopMatrix()
 
-    # Urano
-    glColor3f(102, 204, 255)  # Color Azulado
+    # Urano.
+    glColor3f(102, 204, 255)  # Color Azulado.
     glPushMatrix()
-    glTranslatef(500.0 * math.cos(math.radians(angle_Urano)), 0.0, -500.0 * math.sin(math.radians(angle_Urano)))  # Orbitar alrededor del sol
-    glRotatef(angle_Jupiter, 1, 0, 0)  # Rotar sobre su propio eje
+    glTranslatef(500.0 * math.cos(math.radians(angle_Urano)), 0.0, -500.0 * math.sin(math.radians(angle_Urano)))  # Orbitar alrededor del sol.
+    glRotatef(angle_Jupiter, 1, 0, 0)  # Rotar sobre su propio eje.
     glBindTexture(GL_TEXTURE_2D, Urano_texture)
-    drawTexturedSphere(Urano_texture, 17.0, 20, 20)  # Radio de Saturno
+    drawTexturedSphere(Urano_texture, 17.0, 20, 20)  # Radio de Saturno.
     glPopMatrix()
 
-    # Dibujar el anillo de Urano
-    glColor3f(0, 51, 102)  # Color Azulado
+    # Dibujar el anillo de Urano.
+    glColor3f(0, 51, 102)  # Color Azulado.
     glPushMatrix()
-    glTranslatef(500.0 * math.cos(math.radians(angle_Urano)), 0.0, -500.0 * math.sin(math.radians(angle_Urano)))  # Posición del anillo (igual que la posición de Urano)
-    glRotatef(1000, 0, 1, 0)  # Rotar el anillo para que sea horizontal
-    glutSolidTorus(0.5, 35, 30, 30)  # Radio interior, radio exterior, segmentos radiales, segmentos anulares
+    glTranslatef(500.0 * math.cos(math.radians(angle_Urano)), 0.0, -500.0 * math.sin(math.radians(angle_Urano)))  # Posición del anillo (igual que la posición de Urano).
+    glRotatef(1000, 0, 1, 0)  # Rotar el anillo para que sea horizontal.
+    glutSolidTorus(0.5, 35, 30, 30)  # Radio interior, radio exterior, segmentos radiales, segmentos anulares.
     glPopMatrix()
 
-    # Luna 1 de Urano (Titania)
-    glColor3f(0.8, 0.8, 0.8)  # Color gris claro
+    # Luna 1 de Urano (Titania).
+    glColor3f(0.8, 0.8, 0.8)  # Color gris claro.
     glPushMatrix()
-    glTranslatef(500.0 * math.cos(math.radians(angle_Urano)) + 30.0 * math.cos(math.radians(angle_luna)), 0.0, -500.0 * math.sin(math.radians(angle_Urano)) - 30.0 * math.sin(math.radians(angle_luna)))  # Orbitar alrededor de Urano
-    glRotatef(angle_luna, 0, 1, 0)  # Rotación sobre su propio eje
-    glBindTexture(GL_TEXTURE_2D, Titania)  # Textura de la Luna
-    drawTexturedSphere(Titania, 4.0, 20, 20)  # Tamaño de la Luna
+    glTranslatef(500.0 * math.cos(math.radians(angle_Urano)) + 30.0 * math.cos(math.radians(angle_luna)), 0.0, -500.0 * math.sin(math.radians(angle_Urano)) - 30.0 * math.sin(math.radians(angle_luna)))  # Orbitar alrededor de Urano.
+    glRotatef(angle_luna, 0, 1, 0)  # Rotación sobre su propio eje.
+    glBindTexture(GL_TEXTURE_2D, Titania)  # Textura de la Luna.
+    drawTexturedSphere(Titania, 4.0, 20, 20)  # Tamaño de la Luna.
     glPopMatrix()
 
-    # Luna 2 de Urano (Oberón)
-    glColor3f(0.8, 0.8, 0.8)  # Color gris claro
+    # Luna 2 de Urano (Oberón).
+    glColor3f(0.8, 0.8, 0.8)  # Color gris claro.
     glPushMatrix()
-    glTranslatef(500.0 * math.cos(math.radians(angle_Urano)) - 40.0 * math.cos(math.radians(angle_luna)), 0.0, -500.0 * math.sin(math.radians(angle_Urano)) + 40.0 * math.sin(math.radians(angle_luna)))  # Orbitar alrededor de Urano
-    glRotatef(angle_luna, 0, 1, 0)  # Rotación sobre su propio eje
-    glBindTexture(GL_TEXTURE_2D, Oberon)  # Textura de la Luna
-    drawTexturedSphere(Oberon, 3.5, 20, 20)  # Tamaño de la Luna
+    glTranslatef(500.0 * math.cos(math.radians(angle_Urano)) - 40.0 * math.cos(math.radians(angle_luna)), 0.0, -500.0 * math.sin(math.radians(angle_Urano)) + 40.0 * math.sin(math.radians(angle_luna)))  # Orbitar alrededor de Urano.
+    glRotatef(angle_luna, 0, 1, 0)  # Rotación sobre su propio eje.
+    glBindTexture(GL_TEXTURE_2D, Oberon)  # Textura de la Luna.
+    drawTexturedSphere(Oberon, 3.5, 20, 20)  # Tamaño de la Luna.
     glPopMatrix()   
 
-    # Neptuno
-    glColor3f(0, 51, 102)  # Color Azulado
+    # Neptuno.
+    glColor3f(0, 51, 102)  # Color Azulado.
     glPushMatrix()
-    glTranslatef(550.0 * math.cos(math.radians(angle_neptuno)), 0.0, -550.0 * math.sin(math.radians(angle_neptuno)))  # Orbitar alrededor del sol
-    glRotatef(angle_Jupiter, 1, 1, 0)  # Rotar sobre su propio eje
+    glTranslatef(550.0 * math.cos(math.radians(angle_neptuno)), 0.0, -550.0 * math.sin(math.radians(angle_neptuno)))  # Orbitar alrededor del sol.
+    glRotatef(angle_Jupiter, 1, 1, 0)  # Rotar sobre su propio eje.
     glBindTexture(GL_TEXTURE_2D, Neptuno_texture)
-    drawTexturedSphere(Neptuno_texture, 15.0, 20, 20)  # Radio de Saturno
+    drawTexturedSphere(Neptuno_texture, 15.0, 20, 20)  # Radio de Saturno.
     glPopMatrix()
 
-    # Luna 1 de Neptuno (Tritón)
-    glColor3f(0.8, 0.8, 0.8)  # Color gris claro
+    # Luna 1 de Neptuno (Tritón).
+    glColor3f(0.8, 0.8, 0.8)  # Color gris claro.
     glPushMatrix()
-    glTranslatef(550.0 * math.cos(math.radians(angle_neptuno)) - 30.0 * math.cos(math.radians(angle_luna)), 0.0, -550.0 * math.sin(math.radians(angle_neptuno)) + 30.0 * math.sin(math.radians(angle_luna)))  # Orbitar alrededor de Neptuno
-    glRotatef(angle_luna, 0, 1, 0)  # Rotación sobre su propio eje
-    glBindTexture(GL_TEXTURE_2D, Triton)  # Textura de la Luna
-    drawTexturedSphere(Triton, 3.5, 20, 20)  # Tamaño de la Luna
+    glTranslatef(550.0 * math.cos(math.radians(angle_neptuno)) - 30.0 * math.cos(math.radians(angle_luna)), 0.0, -550.0 * math.sin(math.radians(angle_neptuno)) + 30.0 * math.sin(math.radians(angle_luna)))  # Orbitar alrededor de Neptuno.
+    glRotatef(angle_luna, 0, 1, 0)  # Rotación sobre su propio eje.
+    glBindTexture(GL_TEXTURE_2D, Triton)  # Textura de la Luna.
+    drawTexturedSphere(Triton, 3.5, 20, 20)  # Tamaño de la Luna.
     glPopMatrix()
 
-    # Luna 2 de Neptuno (Proteo)
-    glColor3f(0.8, 0.8, 0.8)  # Color gris claro
+    # Luna 2 de Neptuno (Proteo).
+    glColor3f(0.8, 0.8, 0.8)  # Color gris claro.
     glPushMatrix()
-    glTranslatef(550.0 * math.cos(math.radians(angle_neptuno)) + 40.0 * math.cos(math.radians(angle_luna)), 0.0, -550.0 * math.sin(math.radians(angle_neptuno)) - 40.0 * math.sin(math.radians(angle_luna)))  # Orbitar alrededor de Neptuno
-    glRotatef(angle_luna, 0, 1, 0)  # Rotación sobre su propio eje
-    glBindTexture(GL_TEXTURE_2D, Proteo)  # Textura de la Luna
-    drawTexturedSphere(Proteo, 3.0, 20, 20)  # Tamaño de la Luna
+    glTranslatef(550.0 * math.cos(math.radians(angle_neptuno)) + 40.0 * math.cos(math.radians(angle_luna)), 0.0, -550.0 * math.sin(math.radians(angle_neptuno)) - 40.0 * math.sin(math.radians(angle_luna)))  # Orbitar alrededor de Neptuno.
+    glRotatef(angle_luna, 0, 1, 0)  # Rotación sobre su propio eje.
+    glBindTexture(GL_TEXTURE_2D, Proteo)  # Textura de la Luna.
+    drawTexturedSphere(Proteo, 3.0, 20, 20)  # Tamaño de la Luna.
     glPopMatrix()
 
-# Función de renderizado
+# Función de renderizado.
 def renderScene():
     global angle_ast, angle_sun, angle_mercury, angle_venus, angle_earth, angle_mars, angle_Jupiter, angle_Saturno, angle_Urano, angle_neptuno, zoom, angle_luna
 
-    # Incrementar los ángulos de rotación para cada planeta
+    # Incrementar los ángulos de rotación para cada planeta.
     angle_sun += 0.002
     angle_mercury += 0.004
     angle_venus += 0.002
@@ -390,11 +390,11 @@ def renderScene():
     drawOrbits()
     drawBackgroundSphere(700.0, 50, 50)  # Radio grande para cubrir el sistema solar.
 
-    # Renderizar los planetas y órbitas
+    # Renderizar los planetas y órbitas.
     drawPlanets()
 
     glutSwapBuffers()
-    glutPostRedisplay()  # Redibujar la ventana continuamente
+    glutPostRedisplay()  # Redibujar la ventana continuamente.
 
 # Función principal
 def main():
@@ -424,7 +424,7 @@ def main():
     
     set_projection(2500, 1000)
 
-    # Cargar las texturas
+    # Cargar las texturas.
     sun_texture = loadTexture("../Imagenes/Sistema_Solar/sol.jpg")
     mercury_texture = loadTexture("../Imagenes/Sistema_Solar/mercurio.jpg")
     venus_texture = loadTexture("../Imagenes/Sistema_Solar/venus.jpg")
