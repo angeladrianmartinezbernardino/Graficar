@@ -14,7 +14,6 @@ def crear_tablero():
             tablero.append((x, 0, z))
     return tablero
 
-
 # Dibujar una celda.
 def dibujar_celda(pos, color):
     x, y, z = pos
